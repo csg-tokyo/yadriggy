@@ -181,13 +181,13 @@ module Yadriggy
         loop_param = call_ast.block.params[0]
         @printer << 'for (' << c_type(RubyClass::Integer) << ' '
         check(loop_param)
-        @printer << ' = 0; '
-        check(loop_param)
-        @printer << ' < ('
+        @printer << ' = ('
         check(ast.receiver)
-        @printer << '); '
+        @printer << ') - 1; '
         check(loop_param)
-        @printer << '++) {'
+        @printer << ' >= 0; '
+        check(loop_param)
+        @printer << '--) {'
         @printer.down
         local_var_declarations(ast.block)
         check(ast.block.body)
