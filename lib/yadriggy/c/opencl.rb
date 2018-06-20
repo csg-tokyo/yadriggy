@@ -2,6 +2,8 @@
 
 require 'yadriggy/c/ctype.rb'
 require 'yadriggy/c/codegen'
+require 'yadriggy/c/ctypecheck'
+require 'yadriggy/c/program'
 require 'yadriggy/c/config'
 
 module Yadriggy
