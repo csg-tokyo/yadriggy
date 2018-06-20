@@ -26,6 +26,16 @@ $ ruby -I../lib array.rb
 $ rm -r yadriggy_tmp/
 ```
 
+### OpenCL
+
+`opencl.rb` is the source code.  It offloads the computation to the GPU.
+To run this,
+
+```
+$ ruby -I../lib opencl.rb
+$ rm -r yadriggy_tmp/
+```
+
 ### Image filter
 
 `image_filters/laplacian_demo.rb` is source code.
