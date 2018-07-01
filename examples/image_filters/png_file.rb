@@ -2,9 +2,14 @@
 
 require 'zlib'
 
+# Simple PNG file reader/writer
+#
 class PngFile
   attr_reader :width, :height, :type, :srgb
 
+  # Reads a PNG file and constructs a `PngFile` object.
+  # @param [String] file_name  the PNG file name.
+  #
   def initialize(file_name)
     raw_data = File.binread(file_name)
     sig = raw_data[0, 8]
@@ -38,11 +43,17 @@ class PngFile
     end
   end
 
+  # @private
   def supported?
     @depth == 8 && @filter == 0 && @interlace == 0 &&
       @type == 2
   end
 
+  # Obtains a pixmap of this PNG file.
+  #
+  # @return [Array<Array<Array<Integer>>>]  an array of line image.
+  #   Each line image is an array of pixel values.  A pixel value
+  #   is an array of red, green, and blue intensity.
   def to_a
     data = Array.new(@height) { Array.new(@width, 0) }
 
@@ -89,6 +100,9 @@ class PngFile
     data
   end
 
+  # Obtains a pixmap.
+  # @param [Array<Integer>]  an array where the pixmap will be stored.
+  # @return [Array<Integer>]  a flattened pixmap.
   def to_array1d(array=nil)
     array = Array.new(@width * @height) if array.nil?
     pos = 0
