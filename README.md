@@ -12,6 +12,8 @@ languages except their syntax.
 They parasitize Ruby by borrowing the syntax but their parasitism is
 hemi; their execution engines are their own.
 
+For details, the documentation is available from [Wiki](https://github.com/csg-tokyo/yadriggy/wiki/Yadriggy-C).
+
 ## Hemiparasitic DSLs
 
 A typical example of hemiparasitic DSL is computation offloading from
