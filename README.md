@@ -90,7 +90,11 @@ The idea of `reify` was proposed in the following paper:
 
 ## Installation
 
-To install, download this repository and run:
+To install, run:
+
+    $ gem install yadriggy
+
+or, download this repository and run:
 
     $ bundle exec rake install
 
