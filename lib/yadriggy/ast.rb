@@ -587,14 +587,14 @@ module Yadriggy
     attr_reader :op
 
     # @return [ASTnode] the operand.
-    attr_reader :expr
+    attr_reader :operand
 
     def self.tag() :unary end
 
     def initialize(sexp)
       @op = sexp[1]
-      @expr = to_node(sexp[2])
-      add_child(@expr)
+      @operand = to_node(sexp[2])
+      add_child(@operand)
     end
 
     # Returns the real operator name.

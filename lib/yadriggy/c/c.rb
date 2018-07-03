@@ -57,7 +57,7 @@ module Yadriggy
       typedecl   <= Call +
                    { name: typedecl_name, args: [ typedecl_hash ] }
 
-      return_type <= Unary + { expr: Const | ConstPathRef | arrayof }
+      return_type <= Unary + { operand: Const | ConstPathRef | arrayof }
       func_body  <= return_type | stmnt |
                     Exprs + { expressions: [ (return_type), stmnt ] }
 

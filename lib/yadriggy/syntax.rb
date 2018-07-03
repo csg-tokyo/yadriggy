@@ -477,7 +477,7 @@ module Yadriggy
         ArrayRefField  <= ArrayRef
         Assign     <= Binary
         Dots       <= Binary
-        Unary      <= { op: Symbol, expr: expr }
+        Unary      <= { op: Symbol, operand: expr }
         ConstPathRef   <= { scope: (ConstPathRef | Const), name: Const }
         ConstPathField <= ConstPathRef
         StringLiteral  <= { value: String }

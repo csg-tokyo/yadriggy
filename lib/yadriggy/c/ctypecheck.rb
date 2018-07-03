@@ -143,7 +143,7 @@ module Yadriggy
       end
 
       rule(:return_type) do
-        typedecl_type(ast.expr)
+        typedecl_type(ast.operand)
       end
 
       rule(Number) do
@@ -248,7 +248,7 @@ module Yadriggy
       end
 
       rule(Unary) do
-        t = type(ast.expr)
+        t = type(ast.operand)
         type_assert(ast.op == :-@, "bad operator: #{ast.op}")
         t
       end

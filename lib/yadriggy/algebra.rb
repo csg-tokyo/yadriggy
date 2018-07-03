@@ -343,7 +343,7 @@ module Yadriggy
     end
 
     def unary(expr)
-      @algebra.unary(expr.op, evaluate(expr.expr))
+      @algebra.unary(expr.op, evaluate(expr.operand))
     end
 
     def binary(expr)

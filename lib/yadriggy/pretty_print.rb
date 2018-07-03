@@ -103,7 +103,7 @@ module Yadriggy
 
     rule(Unary) do
       @printer << ast.real_operator
-      print(ast.expr)
+      print(ast.operand)
     end
 
     rule(Binary) do

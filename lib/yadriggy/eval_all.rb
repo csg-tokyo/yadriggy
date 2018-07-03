@@ -43,7 +43,7 @@ module Yadriggy
     end
 
     def unary(expr)
-      evaluate(expr.expr)
+      evaluate(expr.operand)
     end
 
     def binary(expr)

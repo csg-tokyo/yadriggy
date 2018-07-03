@@ -326,19 +326,19 @@ module Yadriggy
 
   class Unary
     def value()
-      send_op_to_value(@expr.value)
+      send_op_to_value(@operand.value)
     end
 
     def value_in_class(klass)
-      send_op_to_value(@expr.value_in_class(klass))
+      send_op_to_value(@operand.value_in_class(klass))
     end
 
     def const_value()
-      send_op_to_value(@expr.const_value)
+      send_op_to_value(@operand.const_value)
     end
 
     def const_value_in_class(klass)
-      send_op_to_value(@expr.const_value_in_class(klass))
+      send_op_to_value(@operand.const_value_in_class(klass))
     end
 
     private
@@ -357,7 +357,7 @@ module Yadriggy
     end
 
     def value_in_class(klass)
-      send_op_to_value(@expr.value_in_class(klass),
+      send_op_to_value(@left.value_in_class(klass),
                        @right.value_in_class(klass))
     end
 
@@ -366,7 +366,7 @@ module Yadriggy
     end
 
     def const_value_in_class(klass)
-      send_op_to_value(@expr.const_value_in_class(klass),
+      send_op_to_value(@left.const_value_in_class(klass),
                        @right.const_value_in_class(klass))
     end
 

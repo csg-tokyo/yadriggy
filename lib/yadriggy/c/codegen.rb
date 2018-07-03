@@ -134,7 +134,7 @@ module Yadriggy
 
       rule(Unary) do
         @printer << ast.real_operator.to_s
-        check(ast.expr)
+        check(ast.operand)
       end
 
       rule(Binary) do
@@ -153,7 +153,7 @@ module Yadriggy
       end
 
       rule(Dots) do
-        error(expr, 'a range object is not available')
+        error(ast, 'a range object is not available')
       end
 
       rule(Call) do

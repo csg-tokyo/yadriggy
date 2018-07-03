@@ -121,7 +121,7 @@ module Yadriggy
     end
 
     rule(Unary) do
-      type(ast.expr)
+      type(ast.operand)
     end
 
     rule(Binary) do

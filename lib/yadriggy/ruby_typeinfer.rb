@@ -169,7 +169,7 @@ module Yadriggy
 
     # +@, -@, !, ~, not
     rule(Unary) do
-      expr_t = type(ast.expr)
+      expr_t = type(ast.operand)
       op = ast.op
       if op == :! || op == :not
         RubyClass::Boolean
@@ -178,7 +178,7 @@ module Yadriggy
             ((op == :+@ || op == :-@) && expr_t <= RubyClass::Numeric)
           expr_t
         else
-          call_expr = Call.make(receiver: ast.expr, name: op,
+          call_expr = Call.make(receiver: ast.operand, name: op,
                                 parent: ast.parent)
           get_call_expr_type(call_expr, type_env, op)
         end
