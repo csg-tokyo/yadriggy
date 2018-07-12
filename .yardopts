@@ -1,0 +1,3 @@
+--hide-api private
+--markup markdown
+lib/**/*.rb

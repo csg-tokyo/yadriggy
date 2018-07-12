@@ -17,7 +17,7 @@ module Yadriggy
       class Float32
       end
 
-      # @private
+      # @api private
       # An alias `RubyClass[Float32]`.
       Float32Type = RubyClass[Float32]
 
@@ -33,11 +33,11 @@ module Yadriggy
         include Yadriggy::C::CType
       end
 
-      # @private
+      # @api private
       # Array type available only in C code.
       # See also {IntArray} and {FloatArray} in `ffi.rb`.
       class CArray < IvarObj
-        # @private
+        # @api private
         def typedecl(arg) end
 
         # debug mode.
@@ -53,14 +53,14 @@ module Yadriggy
           @debug = false
         end
 
-        # @private
+        # @api private
         # @abstract
         # @return [Type] the element type.
         def type()
           Undef
         end
 
-        # @private
+        # @api private
         def check_range(indexes)
           raise 'wrong number of indexes' unless indexes.size == @sizes.size
           indexes.each_index do |i|

@@ -29,7 +29,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # When the initial value of a variable is an InstanceType,
     # the type of the variable has to be a RubyCass type
     # corresponding to that instance type.
@@ -86,7 +86,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def is_attr_accessor?(expr, tenv, name)
       self_t = type_env.context
       !self_t.nil? &&
@@ -191,7 +191,7 @@ module Yadriggy
       binary_type(ast, right_t, left_t)
     end
 
-    # @private
+    # @api private
     def binary_type(bin_expr, right_t, left_t)
       op = bin_expr.op
       case op
@@ -263,7 +263,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # Overrides {RubyTypeChecker#get_return_type}.
     #
     def get_return_type(an_ast, mthd, new_tenv, arg_types)

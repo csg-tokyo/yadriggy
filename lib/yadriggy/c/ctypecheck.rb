@@ -96,7 +96,7 @@ module Yadriggy
         Void
       end
 
-      # @private
+      # @api private
       # @param [ASTnode] type_expr
       def typedecl_type(type_expr)
         if type_expr.is_a?(Call)
@@ -116,7 +116,7 @@ module Yadriggy
         end
       end
 
-      # @private
+      # @api private
       def declare_type(name, name_ast, t)
         if name == 'return' || name == 'foreign'
           type_assert(valid_type?(t) || t == Void,
@@ -135,7 +135,7 @@ module Yadriggy
         end
       end
 
-      # @private
+      # @api private
       def check_duplicate(name, t)
         old_type = type_env.bound_name?(name)
         type_assert(old_type.nil? || old_type == t,
@@ -204,7 +204,7 @@ module Yadriggy
         binary_cexpr_type(ast.op, t1, t2)
       end
 
-      # @private
+      # @api private
       def binary_cexpr_type(op, t1, t2)
         case op
         when :+, :-, :*, :/
@@ -316,8 +316,8 @@ module Yadriggy
       # Specifies the names of methods with a block.
       #
       # @param [String] name  a method name.
-      # @see {CodeGen#call_with_block}
-      # @see {#typecheck_call_with_block}
+      # @see CodeGen#call_with_block
+      # @see #typecheck_call_with_block
       def method_with_block?(name)
         name == 'times'
       end

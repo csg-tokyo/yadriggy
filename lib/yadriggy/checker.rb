@@ -24,13 +24,13 @@ module Yadriggy
       @rule_declarators[node_type] = self
     end
 
-    # @private
+    # @api private
     # Initializes this class if necessary.
     def self.check_init_class
       init_class if @rules.nil?
     end
 
-    # @private
+    # @api private
     # @return [Array<Hash>] all the rules defined so far.
     def self.all_rules
       [@rules, @rule_declarators]
@@ -48,7 +48,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # internal-use only.  Don't call this.
     # @return [Pair<Proc,Class>] a rule and the class declaring it, or nil.
     #
@@ -136,7 +136,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # internal use only
     def apply_typing_rule(rule, an_ast, ast_tenv)
       if rule.nil?
@@ -194,7 +194,7 @@ module Yadriggy
       @check_list << [cur_ast, cur_env, proc]
     end
 
-    # @private
+    # @api private
     def error_found!(an_ast, msg='')
       loc  = if an_ast.is_a?(ASTnode)
                an_ast.source_location_string
@@ -206,7 +206,7 @@ module Yadriggy
       raise CheckError.new(@error)
     end
 
-    # @private
+    # @api private
     def error_group
       ''
     end

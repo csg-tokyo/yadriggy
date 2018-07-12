@@ -373,7 +373,7 @@ module Yadriggy
       #
       # @param [Array<String>] func_names  the names of the generated
       #   functions.
-      # @param [Array<Type>] func_names  the types of the original methods.
+      # @param [Array<Type>] func_types  the types of the original methods.
       # @return [Array<String>, Array<Type>]  the names and types.
       def expand_functions(func_names, func_types)
         return func_names, func_types

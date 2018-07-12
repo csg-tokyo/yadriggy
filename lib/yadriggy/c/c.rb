@@ -95,7 +95,7 @@ module Yadriggy
       mod
     end
 
-    # @private
+    # @api private
     # @return [Pair<Module,Array<String>>]
     def self.compile0(obj, lib_name, dir, module_name,
                       typechecker_class, gen_class)
@@ -109,7 +109,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # @return [Pair<Module,Array<String>>]
     def self.compile1(obj, lib_name, dir, module_name,
                       typechecker_class, gen_class)
@@ -141,7 +141,7 @@ module Yadriggy
       attach_funcs(pub_methods, checker, gen, module_name, lib_name, dir)
     end
 
-    # @private
+    # @api private
     # @return [Array<ASTree>] the ASTs of compiled methods.
     def self.compiled_methods(checker, method_objs)
       ast = nil
@@ -165,7 +165,7 @@ module Yadriggy
       return pub_methods
     end
 
-    # @private
+    # @api private
     def self.generate_funcs(ast, gen, printer)
       gen.name_global_variables
       gen.headers
@@ -185,7 +185,7 @@ module Yadriggy
       raise BuildError.new(gen.error_messages) if gen.errors?
     end
 
-    # @private
+    # @api private
     # @return [Pair<Module,Array<String>>] the module where the methods
     #   are attached.  The second element is method names.
     def self.attach_funcs(pub_methods, checker, gen, module_name,

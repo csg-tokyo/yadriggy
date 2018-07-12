@@ -81,7 +81,7 @@ module Yadriggy
         @parent&.context
       end
 
-      # @private
+      # @api private
       class BaseTypeEnv < TypeEnv
         def initialize(clazz)
           super(nil)
@@ -211,7 +211,7 @@ module Yadriggy
       TypeEnv::BaseTypeEnv.new(klass)
     end
 
-    # @private
+    # @api private
     # Internal-use only.  Don't use this method.  Use type().
     #
     def check(an_ast, ast_tenv=nil)
@@ -245,7 +245,7 @@ module Yadriggy
     #
     # @param [ASTnode|nil]  an_ast  an AST.
     # @param [Type] a_type  a type.
-    # @param [Type|nil] the given type `a_type`.
+    # @return [Type|nil] the given type `a_type`.
     def type_as(an_ast, a_type)
       if an_ast.nil?
         DynType

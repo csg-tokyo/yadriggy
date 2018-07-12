@@ -8,7 +8,7 @@ module Yadriggy
   # Don't use `is_a?` but use `has_role?` or `role`.
   #
   class Type
-    # @private
+    # @api private
     def self.get_instance_method_object(recv_type, method_name)
       recv_type.get_method_object(method_name)
     end
@@ -54,7 +54,7 @@ module Yadriggy
       self == t
     end
 
-    # @private
+    # @api private
     # Only {DynType}, {UnionType} and {OptionalRole} override this method.
     def is_super_of? (t)
       false
@@ -96,7 +96,7 @@ module Yadriggy
       DynType
     end
 
-    # @private
+    # @api private
     # Gets a method with the given name declared in this type.
     # `nil` is returned when the method is not exactly determined.
     #
@@ -111,7 +111,7 @@ module Yadriggy
     end
   end
 
-  # @private
+  # @api private
   class NonRubyType < Type
     def initialize(obj_name, type_name)
       @obj_name = obj_name
@@ -152,7 +152,7 @@ module Yadriggy
   # Dynamic type.
   DynType = NonRubyType.new('#<Yadriggy::DynType>', 'DynType')
 
-  # @private
+  # @api private
   def DynType.is_super_of?(t)
     true
   end
@@ -198,17 +198,17 @@ module Yadriggy
         (normalize(self) | normalize(ut)).size <= @types.size
     end
 
-    # @private
+    # @api private
     def normalize(utype)
       utype.types.map {|e| e.copy(OptionalRole) }
     end
 
-    # @private
+    # @api private
     def hash
       @types.hash
     end
 
-    # @private
+    # @api private
     # Check the subtype relation.
     # @param [Type] t  the other type.
     # @return [Boolean] true if `self` is equivalent to `t`
@@ -244,17 +244,17 @@ module Yadriggy
       @type = t
     end
 
-    # @private
+    # @api private
     def == (t)
       CommonSuperType.role(t)&.type == @type
     end
 
-    # @private
+    # @api private
     def hash
       @type.hash + 1
     end
 
-    # @private
+    # @api private
     # Check the subtype relation.
     # @param [Type] t  the other type.
     # @return [Boolean] true if `self` is equivalent to `t`
@@ -268,7 +268,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def get_method_object(method_name)
       nil
     end
@@ -295,17 +295,17 @@ module Yadriggy
   # by {CommonSuperType}.
   #
   class RubyClass < Type
-    # @private
+    # @api private
     Table = {}
 
-    # @private
+    # @api private
     def self.make(clazz)
       obj = RubyClass.new(clazz)
       Table[clazz] = obj
       obj
     end
 
-    # @private
+    # @api private
     def self.set_alias(clazz, ruby_class)
       Table[clazz] = ruby_class
     end
@@ -330,12 +330,12 @@ module Yadriggy
       RubyClass.role(t)&.exact_type == @ruby_class
     end
 
-    # @private
+    # @api private
     def hash
       @ruby_class.hash
     end
 
-    # @private
+    # @api private
     # Check the subtype relation.
     # @param [Type] t  the other type.
     # @return [Boolean] true if `self` is equivalent to `t`
@@ -353,14 +353,14 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def get_method_object(method_name)
       @ruby_class.instance_method(method_name)
     rescue NameError
       Type.error_found!("no such method: #{@ruby_class}\##{method_name}")
     end
 
-    # @private
+    # @api private
     def exact_type
       @ruby_class
     end
@@ -417,17 +417,17 @@ module Yadriggy
       @object = obj
     end
 
-    # @private
+    # @api private
     def == (t)
       InstanceType.role(t)&.object == @object
     end
 
-    # @private
+    # @api private
     def hash
       @object.hash
     end
 
-    # @private
+    # @api private
     # Check the subtype relation.
     # @param [Type] t  the other type.
     # @return [Boolean] true if `self` is equivalent to `t`
@@ -442,13 +442,13 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # Recall that `1.class` was `Fixnum` in Ruby earlier than 2.4.
     def exact_type
       @object.is_a?(Integer) ? Integer : @object.class
     end
 
-    # @private
+    # @api private
     def get_method_object(method_name)
       @object.method(method_name)
     rescue NameError
@@ -500,18 +500,18 @@ module Yadriggy
     # @return [Parameters] the method definition.
     def method_def() @method_def end
 
-    # @private
+    # @api private
     def == (t)
       mt = MethodType.role(t)
       !mt.nil? && @result_type == mt.result_type && @param_types == mt.params
     end
 
-    # @private
+    # @api private
     def hash
       @result_type.hash + @param_types.hash
     end
 
-    # @private
+    # @api private
     def <= (t)
       if t.is_super_of?(self)
         true
@@ -584,12 +584,12 @@ module Yadriggy
         ct.args == @args
     end
 
-    # @private
+    # @api private
     def hash
       @ruby_class.hash + @args.reduce(0) {|h,p| h + p.hash }
     end
 
-    # @private
+    # @api private
     # Check the subtype relation.
     # @param [Type] t  the other type.
     # @return [Boolean] true if `self` is equivalent to `t`
@@ -608,7 +608,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def exact_type
       @ruby_class
     end
@@ -636,7 +636,7 @@ module Yadriggy
       @type = type
     end
 
-    # @private
+    # @api private
     def copy(without_role)
       chain = @type.copy(without_role)
       if self.is_a?(without_role)
@@ -652,7 +652,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def update_type(t)
       @type = t
     end
@@ -663,22 +663,22 @@ module Yadriggy
       @type == t
     end
 
-    # @private
+    # @api private
     def hash
       @type.hash
     end
 
-    # @private
+    # @api private
     def <= (t)
       @type <= t
     end
 
-    # @private
+    # @api private
     def is_super_of?(t)
       @type.is_super_of?(t)
     end
 
-    # @private
+    # @api private
     def has_role?(a_role)
       if self.is_a?(a_role)
         self
@@ -687,12 +687,12 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def exact_type
       @type.exact_type
     end
 
-    # @private
+    # @api private
     def get_method_object(method_name)
       Type.get_instance_method_object(@type, method_name)
     end

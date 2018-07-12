@@ -4,7 +4,7 @@ require 'ripper'
 require 'pry'
 
 module Yadriggy
-  # @private
+  # @api private
   # Retrieves source code in the S-expression style.
   class SourceCode
 
@@ -105,6 +105,7 @@ module Yadriggy
           prog[1][2][0] == line
     end
 
+    # @api private
     class Cons
       include Enumerable
       attr_accessor :head, :tail

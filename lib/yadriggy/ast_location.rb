@@ -27,7 +27,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     class GetLocation < EvalAll
       def initialize
         @unknown = true

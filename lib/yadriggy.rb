@@ -25,7 +25,7 @@ module Yadriggy
   def self.debug() @@debug end
 
   # Sets the current debug level.
-  # @param [Integer] level.
+  # @param [Integer] level  the debug level.
   def self.debug=(level)
     @@debug = level
   end

@@ -276,7 +276,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def print_parameters(params_ast)
       is_first = true
       is_first = print_each(params_ast.params, is_first)
@@ -458,7 +458,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def print_each(array, first)
       array.each do |e|
         if e
@@ -473,7 +473,7 @@ module Yadriggy
       first
     end
 
-    # @private
+    # @api private
     def print_list(array, first)
       array.each do |e|
         if e

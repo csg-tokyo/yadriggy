@@ -792,7 +792,7 @@ module Yadriggy
                       parent, link_from_children)
     end
 
-    # @private
+    # @api private
     def initialize2(recv, op, name, args, barg, blk,
                     parent, link_from_children)
       @receiver = recv
@@ -1652,7 +1652,7 @@ module Yadriggy
     end
   end
 
-  # @private
+  # @api private
   # A table of reified abstract syntax trees.
   # It is used for guaranteeing the uniqueness
   # of ASTree objects.

@@ -65,7 +65,7 @@ module Yadriggy
       update_hash(ast.tree.body)
     end
 
-    # @private
+    # @api private
     # @param [Body] body
     # @return [void]
     def update_hash(body)

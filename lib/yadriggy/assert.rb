@@ -22,7 +22,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def self.puts_reason(reason, evar=nil)
       puts '--- Yadriggy::Assert ---'
       print evar.cause.class.name, ': ' if evar&.cause
@@ -52,13 +52,13 @@ module Yadriggy
 
     # Reason that an assertion fails.
     class Reason
-      # @private
+      # @api private
       def setup(ast, results)
         @ast = ast
         @results = results
       end
 
-      # Gets the AST of the block given to {#assertion}.
+      # Gets the AST of the block given to {Yadriggy::Assert#assertion}.
       # @return [ASTnode] an abstract syntax tree.
       def ast() @ast end
 
@@ -85,7 +85,7 @@ module Yadriggy
         output.reverse!
       end
 
-      # @private
+      # @api private
       # @return [String] the new header.
       def show2(ast, header, output)
         if ast.is_a?(Paren)
@@ -136,7 +136,7 @@ module Yadriggy
         end
       end
 
-      # @private
+      # @api private
       # Obtains the text representation of the given value.
       def str_rep(v)
         max = 70
@@ -149,7 +149,7 @@ module Yadriggy
       end
     end
 
-    # Exception thrown by {#assertion}.
+    # Exception thrown by {Yadriggy::Assert#assertion}.
     #
     class AssertFailure < StandardError
       def initialize(reason, msg=nil, cause=nil)
@@ -167,7 +167,7 @@ module Yadriggy
       def reason() @reason end
     end
 
-    # @private
+    # @api private
     # Executes the given AST and records the result.
     # @param [ASTnode] ast  the given AST.
     # @param [Binding] blk_binding  the binding for executing the AST.
@@ -210,7 +210,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     # Eval the AST by the RubyVM
     # @return [Pair<String,Object>]  an array.  The first element is the source code
     #   and the second element is the resulting value.

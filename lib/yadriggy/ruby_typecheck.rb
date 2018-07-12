@@ -413,7 +413,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def lookup_builtin(recv_type, method_name)
       et = recv_type.exact_type
       if DynType == et
@@ -428,7 +428,7 @@ module Yadriggy
       end
     end
 
-    # @private
+    # @api private
     def lookup_ruby_classes(type_env, arg_types, recv_type, method_name)
       begin
         mth = Type.get_instance_method_object(recv_type, method_name)
