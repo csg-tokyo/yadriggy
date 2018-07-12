@@ -24,11 +24,7 @@ module Yadriggy
 
     def self.read_pry_history
       cmds = Pry.commands
-
-      # The line number seems wrong if the source code is in pry_history.
-      # To correct the line number, a blank line is added to source.
-      source = "\n"
-
+      source = ''
       lineno = 0
       lineno1 = Pry.history.original_lines
       File.foreach(Pry.config.history.file) do |line|
