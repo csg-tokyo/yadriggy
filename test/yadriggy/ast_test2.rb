@@ -133,6 +133,21 @@ module Yadriggy
     end
     proc.call(Yadriggy.reify(code))
 
+    code = ->() do
+      a = %q(foobar)
+      b = %Q(foobar #{x})
+      c = %w(foo bar baz)
+      d = %W(abc bar#{x}baz)
+    end
+    proc.call(Yadriggy.reify(code))
+
+    code = ->() do
+      a = %s(foobar baz)
+      # b = %i(foo bar baz)   # Ripper produces an S-exp for %w.
+      # c = %r(foobar)
+    end
+    proc.call(Yadriggy.reify(code))
+
     code = ->(i, j, a, b, c, c2) do
       a = +i + i + 3 + -i
       b = !(i > 3)

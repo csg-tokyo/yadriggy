@@ -424,6 +424,10 @@ module Yadriggy
     def initialize(sexp)
       if sexp[1].nil?
         @elements = []
+      elsif is_percent_literal(sexp[1])
+        @elements = sexp[1].map do |e|
+          StringInterpolation.new([:string_literal, [:string_content] + e])
+        end
       else
         @elements = to_nodes(sexp[1])
       end
@@ -435,6 +439,15 @@ module Yadriggy
     # @return [void]
     def accept(evaluator)
       evaluator.array(self)
+    end
+
+    private
+
+    def is_percent_literal(sexp)
+      sexp.is_a?(Array) && sexp.size > 0 &&
+      sexp.all? do |e|
+        e.is_a?(Array) && e.all? {|ee| ee.is_a?(Array) }
+      end
     end
   end
 
