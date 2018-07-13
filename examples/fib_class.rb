@@ -7,7 +7,7 @@ class Fib < Yadriggy::C::Program
     if n > 1
       return fib(n - 1) + fib(n - 2)
     else
-      return 1
+      return n
     end
   end
 end
