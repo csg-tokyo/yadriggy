@@ -194,7 +194,11 @@ module Yadriggy
       @check_list << [cur_ast, cur_env, proc]
     end
 
-    # @api private
+    # Throws an error.
+    #
+    # @param [ASTnode] an_ast  the AST causing the error.
+    # @param [String] msg  the error message.
+    # @return [void]  always throws an exception.
     def error_found!(an_ast, msg='')
       loc  = if an_ast.is_a?(ASTnode)
                an_ast.source_location_string

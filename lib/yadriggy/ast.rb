@@ -136,7 +136,7 @@ module Yadriggy
     end
   end
 
-  # Reserved words such self, true, and false.
+  # Reserved words such as self, nil, true, and false.
   #
   class Reserved < Name
     def self.tag() :@kw end

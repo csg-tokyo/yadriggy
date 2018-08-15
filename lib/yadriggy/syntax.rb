@@ -21,7 +21,9 @@ module Yadriggy
     # also defined in ast.rb
 
     # The user type (or non-terminal symbol) corresponding
-    # to this node.
+    # to this node.  This is effective only after checking syntax
+    # by {Syntax::check}.
+    #
     # @return [Symbol|nil] the user type.
     attr_accessor :usertype
   end
@@ -402,13 +404,25 @@ module Yadriggy
     # For example, `Binary = { op: :+ }` specifies that the `op` property
     # of `Binary` has to be `:+`.  Note that the other properties such
     # as `left` and `right` are not checked.  Hence, when the rules are
-    # <pre>Binary = { op: :+ }
-    # Unary = { op: :! }</pre>
+    #
+    #   Binary = { op: :+ }
+    #   Unary = { op: :! }
+    #
     # `a + -b` causes no syntax error since the unary expression `-b` is
     # the right operand of the binary expression.  The rule for {Binary}
     # is passed and hence the rule for {Unary} is not applied to `-b`.
-    # <pre>Binary = { op: :+, right: Unary }
-    # Unary = { op: :! }</pre>
+    #
+    #   Binary = { op: :+, right: Unary }
+    #   Unary = { op: :! }
+    #
+    # If the right-hand side of = (or <=) is `nil`, then the rule always
+    # fails.  For example,
+    #
+    #   SymbolLiteral = nil
+    #
+    # This specifies that any `SymbolLiteral` node does not pass syntax
+    # checking.  If the right-hand side is `{}`, any `SymbolLiteral` passes
+    # without further checking.
     #
     # An AST subtree passes syntax checking if no rule is found for that
     # subtree.

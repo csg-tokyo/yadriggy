@@ -5,7 +5,7 @@ require 'yadriggy/ast_test2.rb'
 
 
 module Yadriggy
-  class TypecheckTester < Test::Unit::TestCase
+  class RubyTypecheckTester < Test::Unit::TestCase
     typechecker = RubyTypeChecker.new
 
     test 'typecheck a ruby variable' do

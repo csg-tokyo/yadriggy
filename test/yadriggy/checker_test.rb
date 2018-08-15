@@ -3,8 +3,6 @@ require 'yadriggy/checker.rb'
 
 module Yadriggy
   class CheckTester < Test::Unit::TestCase
-    typechecker = RubyTypeChecker.new
-
     class TestChecker < Checker
       rule(Number) do
         3
