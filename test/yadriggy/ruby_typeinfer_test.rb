@@ -23,6 +23,20 @@ module Yadriggy
       assert(t <= RubyClass::Integer)
     end
 
+    test 'typecheck two assignments' do
+      a = 3
+      ast = Yadriggy::reify { b = a; b = b + 1 }.tree.body
+      assert(typechecker.typecheck(ast).exact_type <= Integer)
+    end
+
+    test 'typecheck a bad assignment' do
+      a = 3
+      ast = Yadriggy::reify { b = a; b = 'test' }.tree.body
+      assert_raise do
+        typechecker.typecheck(ast)
+      end
+    end
+
     test 'typecheck a constant' do
       A = 3
       ast = Yadriggy::reify { A }.tree.body

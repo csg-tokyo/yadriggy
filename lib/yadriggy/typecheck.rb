@@ -6,7 +6,10 @@ require 'yadriggy/type'
 
 module Yadriggy
 
-  # Type checker for ASTree
+  # Type checker for ASTree.
+  # This provides several basic methods and utility classes for type checking.
+  # It does not specify any specific typing rules.  Define a subclass of
+  # {TypeChecker} and write typing rules there.
   #
   # A type object used by TypeChecker can be an instance of any subclass
   # of Type.  It does not have to necessarily be an object representing

@@ -17,21 +17,19 @@ module Yadriggy
     test 'typecheck an assignment' do
       a = 3
       ast = Yadriggy::reify { b = a; b }.tree.body
-      assert(typechecker.typecheck(ast).exact_type <= Integer)
+      assert(typechecker.typecheck(ast) == DynType)
     end
 
     test 'typecheck two assignments' do
       a = 3
       ast = Yadriggy::reify { b = a; b = b + 1 }.tree.body
-      assert(typechecker.typecheck(ast).exact_type <= Integer)
+      assert(typechecker.typecheck(ast) == DynType)
     end
 
     test 'typecheck a bad assignment' do
       a = 3
       ast = Yadriggy::reify { b = a; b = 'test' }.tree.body
-      assert_raise do
-        typechecker.typecheck(ast)
-      end
+      assert(typechecker.typecheck(ast) == DynType)
     end
 
     test 'typecheck a call' do
@@ -49,18 +47,6 @@ module Yadriggy
       assert_raise do
         typechecker.typecheck(ast) == DynType
       end
-    end
-
-    Val3 = "3"
-    Val4 = "4"
-
-    test 'references' do
-      ast = Yadriggy::reify { a = Val3 }.tree.body
-      assert(typechecker.typecheck(ast) <= RubyClass::String)
-      assert(typechecker.references.include?(Val3))
-      assert_false(typechecker.references.include?(Val4))
-      typechecker.clear_references
-      assert_false(typechecker.references.include?(Val3))
     end
 
     class TypeCheck2 < RubyTypeChecker

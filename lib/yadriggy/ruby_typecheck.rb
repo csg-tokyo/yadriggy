@@ -1,29 +1,26 @@
 # Copyright (C) 2017- Shigeru Chiba.  All rights reserved.
 
 require 'yadriggy/typecheck'
-require 'set'
 
 module Yadriggy
-  # Type checker for Ruby
+  # Type checker for Ruby.
+  # Most values are typed as DynType but local variables
+  # are identified.  So `type(ast)` returns
+  # a {LocalVarType} object if `ast` is of a local variable.
+  # A {LocalVarType} is a {Type} object that represents not
+  # only the value's type but also the fact that the value
+  # comes from a local variable.
+  #
+  # The type of a free variable is the type of the current value
+  # of that variable.  {#type} returns an {InstanceType} object.
+  #
+  # This checker also attempts to recursivly trace a call-graph
+  # to reify and type-check the ASTs of the called methods.
   #
   class RubyTypeChecker < TypeChecker
     def initialize(syntax=nil)
       super()
       @syntax = syntax
-      @referred_objects = Set.new
-    end
-
-    # @return [Set<Object>] all the constants that the type-checked code has
-    #   referred to.  Numbers and classes are excluced.
-    def references()
-      @referred_objects
-    end
-
-    # Makes the references set empty.  The references set is a set of constants
-    # returned by {#references}.
-    #
-    def clear_references
-      @referred_objects = Set.new
     end
 
     # Typing rules
@@ -37,34 +34,19 @@ module Yadriggy
       ltype = type(ast.left)
       if ast.op != :'='   # if op is += etc.
         LocalVarType.role(ltype)&.definition = ast.left
-        ltype
       elsif ast.left.is_a?(IdentifierOrCall)
         vtype = type_env.bound_name?(ast.left)
         if vtype.nil?
-          bind_local_var(type_env, ast.left, rtype)
+          bind_local_var(type_env, ast.left, DynType)
         else
-          type_assert(rtype <= vtype, 'invalid assignment')
           LocalVarType.role(vtype)&.definition = ast.left
-          vtype
         end
-      else
-        ltype
       end
+      DynType
     end
 
     rule(Name) do
       get_name_type(ast, type_env)
-    end
-
-    rule(Const) do
-      type = get_name_type(ast, type_env)
-      unless InstanceType.role(type).nil?
-        obj = type.object
-        unless obj.is_a?(Numeric) || obj.is_a?(Module)
-          @referred_objects << obj
-        end
-      end
-      type
     end
 
     # Gets the type of a given name, which may be a local variable
@@ -122,11 +104,13 @@ module Yadriggy
 
     rule(Unary) do
       type(ast.operand)
+      DynType
     end
 
     rule(Binary) do
       type(ast.right)
       type(ast.left)
+      DynType
     end
 
     rule(Dots) do
@@ -311,6 +295,7 @@ module Yadriggy
                 end
         type_assert_subsume(mtype.result, res_t, 'bad result type')
       end
+      bind_local_var(type_env, ast.name, mtype)
       mtype
     end
 
@@ -414,6 +399,9 @@ module Yadriggy
     end
 
     # @api private
+    # Attempts to find a method by {TypeChecker#typedef}, which
+    # searches the method table in this typechecker.
+    #
     def lookup_builtin(recv_type, method_name)
       et = recv_type.exact_type
       if DynType == et
@@ -443,14 +431,17 @@ module Yadriggy
     # It returns a {ResultType}.
     #
     # Override this method to delimit reification.  The implementation
-    # in this class reifies any method.  The method does not have to
+    # in this class reifies any method.  If its source code is not found,
+    # {#get_return_type} reports an error.
+    #
+    # This method {#get_return_type} does not have to
     # return a ResultType, which can be used in a later phase to
     # obtain the invoked method.
     # This method is invoked by rule(Call).  See rule(Call) for more details.
     #
     # @param [Call] an_ast  the Call node.
     # @param [Proc|Method|UnboundMethod] mthd  the method invoked by an_ast.
-    #   if `mthd` is nil, {get_return_type} reports an error.
+    #   if `mthd` is nil, {#get_return_type} reports an error.
     # @param [TypeEnv] new_tenv  a type environment.
     # @param [Array<Type>] arg_types  the types of the actual arguments.
     # @return [ResultType] the result type.
@@ -458,7 +449,6 @@ module Yadriggy
       m_ast = an_ast.root.reify(mthd)
       type_assert_false(m_ast.nil?, "no source code: for #{mthd}")
       (@syntax.check(m_ast.tree) || @syntax.raise_error) if @syntax
-
       mtype = MethodType.role(type(m_ast.tree, new_tenv))
       type_assert(mtype, 'not a method type')
       type_assert_params(mtype.params, arg_types, 'argument type mismatch')

@@ -5,7 +5,10 @@ require 'yadriggy/ruby_typecheck'
 
 module Yadriggy
 
-  # Type checker for Ruby with type inference.
+  # Type checker for Ruby with type inference.  The type system is slightly
+  # different from Ruby's one.
+  # For example, once an integer is assigned to a local variable,
+  # assigning a String value to it causes a type error.
   #
   class RubyTypeInferer < RubyTypeChecker
 
@@ -114,15 +117,6 @@ module Yadriggy
             InstanceType.new(v)
           end
         end
-      end
-    end
-
-    rule(Const) do
-      v = ast.value
-      if v == Undef
-        DynType
-      else
-        InstanceType.new(v)
       end
     end
 
