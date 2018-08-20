@@ -416,7 +416,15 @@ module Yadriggy
       end
     end
 
-    # @api private
+    # Computes the type of the {Call} expression
+    # by searching the receiver class for the called method.
+    #
+    # @param [TypeEnv] new_tenv  a type environment.
+    # @param [Array<Type>] arg_types  the types of the actual arguments.
+    # @param [Type] recv_type the receiver type.
+    # @param [String|Symbol] method_name  the name of the called method.
+    # @raise [CheckError] if the method is not found in the receiver class.
+    # @return [ResultType] the result type.
     def lookup_ruby_classes(type_env, arg_types, recv_type, method_name)
       begin
         mth = Type.get_instance_method_object(recv_type, method_name)
