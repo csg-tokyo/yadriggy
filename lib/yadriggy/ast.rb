@@ -399,7 +399,8 @@ module Yadriggy
     def self.tag() :paren end
 
     def initialize(sexp)
-      @expression = to_node(sexp[1][0])
+      e = if sexp[1][0].is_a?(Array) then sexp[1][0] else sexp[1] end
+      @expression = to_node(e)
       add_child(@expression)
     end
 
@@ -839,6 +840,12 @@ module Yadriggy
         marg = sexp[1]
         if marg[0] == :method_add_arg
           initialize_method_arg(marg[1], marg[2])
+        elsif marg[0] == :command
+          initialize_call([:call, nil, nil, marg[1]])
+          initialize_args(marg[2]) if marg.length > 2
+        elsif marg[0] == :command_call
+          initialize_call([:call, marg[1], marg[2], marg[3]])
+          initialize_args(marg[4]) if marg.length > 4
         else
           initialize_method_arg(marg, [])
         end

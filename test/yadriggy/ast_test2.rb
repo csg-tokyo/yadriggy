@@ -220,6 +220,16 @@ module Yadriggy
     proc.call(Yadriggy.reify(code))
 
     code = ->(i) do
+      self.check_all_asts_f1 (i) { 3 + 1 }
+    end
+    proc.call(Yadriggy.reify(code))
+
+    code = ->(i) do
+      check_all_asts_f1 (i) { 3 + 1 }
+    end
+    proc.call(Yadriggy.reify(code))
+
+    code = ->(i) do
       f = lambda {|x| x + 1 }
       f.(3)
     end
