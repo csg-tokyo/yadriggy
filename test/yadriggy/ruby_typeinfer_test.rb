@@ -208,6 +208,8 @@ module Yadriggy
       syn = Yadriggy::Syntax.ruby_syntax
       tchecker = RubyTypeInferer.new(syn)
 
+      tchecker.add_typedef(Proc)[:call] = MethodType.new(nil, DynType, DynType)
+
       Yadriggy::check_all_asts do |ast|
         assert(syn.check(ast.tree), ast.tree.source_location_string)
         tchecker.typecheck(ast.tree)

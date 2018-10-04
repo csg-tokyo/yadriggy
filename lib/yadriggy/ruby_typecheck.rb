@@ -175,7 +175,8 @@ module Yadriggy
     # get_return_type().
     #
     rule(Call) do
-      method_name = ast.name.to_sym
+      # f.() is equivalent to f.call()
+      method_name = ast.name ? ast.name.to_sym : 'call'
       if method_name == :lambda
         RubyClass::Proc
       elsif method_name == :raise

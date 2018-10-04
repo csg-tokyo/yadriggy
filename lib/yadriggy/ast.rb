@@ -878,7 +878,11 @@ module Yadriggy
     def initialize_call(sexp)
       @receiver = to_node(sexp[1])
       @op = sexp[2]	# :"." or :"::" or nil.
-      @name = to_node(has_tag?(sexp[3], :@ident))
+      @name = if sexp[3] == :call
+                nil
+              else
+                @name = to_node(has_tag?(sexp[3], :@ident))
+              end
       add_child(@receiver)
       add_child(@name)
     end

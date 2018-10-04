@@ -513,7 +513,7 @@ module Yadriggy
                        block_param: (Identifier) }
         Block      <= Parameters + { body: exprs }
         Lambda     <= Block
-        Call       <= { receiver: (expr), op: (Symbol), name: Identifier,
+        Call       <= { receiver: (expr), op: (Symbol), name: (Identifier),
                         args: [ expr ], block_arg: (expr), block: (Block) }
         Command    <= Call
         Exprs      <= { expressions: [ expr ] }

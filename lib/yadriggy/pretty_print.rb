@@ -137,7 +137,7 @@ module Yadriggy
       is_cmd = ast.is_a?(Command)
       print(ast.receiver) if ast.receiver
       @printer << ast.op if ast.op
-      @printer << ast.name.name
+      @printer << ast.name.name if ast.name
       print_arguments(ast.args, ast.block_arg, ast.block, is_cmd)
     end
 

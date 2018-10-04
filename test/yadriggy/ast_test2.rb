@@ -219,6 +219,12 @@ module Yadriggy
     end
     proc.call(Yadriggy.reify(code))
 
+    code = ->(i) do
+      f = lambda {|x| x + 1 }
+      f.(3)
+    end
+    proc.call(Yadriggy.reify(code))
+
     code = ->(i, j) do
       if i > 0 then
         return i
