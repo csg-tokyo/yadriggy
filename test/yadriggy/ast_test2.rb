@@ -204,6 +204,9 @@ module Yadriggy
     code = ->(i) { Yadriggy::check_all_asts_f1(i) }
     proc.call(Yadriggy.reify(code))
 
+    code = ->(i) { check_all_asts_f1(i,) }
+    proc.call(Yadriggy.reify(code))
+
     code = ->(i) do
       check_all_asts_f1 i
     end

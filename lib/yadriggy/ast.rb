@@ -895,7 +895,11 @@ module Yadriggy
     end
 
     def initialize_args(args_block)
-      args = has_tag?(args_block, :args_add_block)[1]
+      args = if args_block[0] == :args_add_block
+               args_block[1]
+             else
+               args_block
+             end
       args2 = initialize_star_arg(args)
       @args = to_nodes(args2)
       @block_arg = if args_block[2]
