@@ -467,7 +467,7 @@ module Yadriggy
     test 'sample code' do
       syn = Yadriggy::define_syntax do
         Binary <= { op: :+ | :-, left: expr, right: expr }
-        expr = Binary | Number
+        expr   <= Binary | Number
         Block  <= { body: expr }
       end
 
