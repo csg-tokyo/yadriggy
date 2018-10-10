@@ -464,6 +464,20 @@ module Yadriggy
       assert_false(syn2.check(tree1.tree.body))
     end
 
+    test 'sample code' do
+      syn = Yadriggy::define_syntax do
+        Binary <= { op: :+ | :-, left: expr, right: expr }
+        expr = Binary | Number
+        Block  <= { body: expr }
+      end
+
+      assert syn.check(Yadriggy::reify { 1 }.tree)
+      assert syn.check(Yadriggy::reify { 1 + 2 }.tree)
+      assert syn.check(Yadriggy::reify { 1 + 2 - 3 }.tree)
+      assert_false syn.check(Yadriggy::reify { 1 * 2 - 3 }.tree)
+      assert_false syn.check(Yadriggy::reify { 1 + a }.tree)
+    end
+
     test 'various ruby code syntax' do
       syn = Yadriggy::Syntax.ruby_syntax
       Yadriggy::check_all_asts do |a|
