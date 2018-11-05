@@ -687,6 +687,9 @@ module Yadriggy
   end
 
   # Assignment such as `=` and `+=`.
+  # `Assign#left` and `Assign#right` return an `ASTnode`,
+  # or an array of `ASTnode` if the node represents multiple
+  # assignment.
   #
   class Assign < Binary
     def self.tags() [:assign, :opassign, :massign] end
