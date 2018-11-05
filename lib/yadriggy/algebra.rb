@@ -113,8 +113,15 @@ module Yadriggy
       binary(left, op, right)
     end
 
+    # @param [Object|Array] left   the left value.
+    # @param [Symbol] op           the operator.
+    # @param [Object|Array] right  the right value.
     def assign(left, op, right)
-      binary(left, op, right)
+      if left.is_a?(Array) || right.is_a?(Array)
+        raise NotImplementedError.new('multiple assignment')
+      else
+        binary(left, op, right)
+      end
     end
 
     def array_ref(array, index)
@@ -259,11 +266,22 @@ module Yadriggy
     end
   end
 
-  # evaluator for Algebra
+  # Evaluator for Algebra
   #
   class EvalAlgebra < Eval
+    # Initializes.
+    #
+    # @param [Algebra] algebra
     def initialize(algebra)
       @algebra = algebra
+    end
+
+    def evaluate(expr)
+      if expr.nil?
+        nil_value(nil)
+      else
+        expr.accept(self)
+      end
     end
 
     def nil_value(expr)
@@ -355,7 +373,17 @@ module Yadriggy
     end
 
     def assign(expr)
-      @algebra.assign(evaluate(expr.left), expr.op, evaluate(expr.right))
+      right = if expr.right.is_a?(Array)
+                expr.right.map {|e| evaluate(e) }
+             else
+                evaluate(expr.right)
+             end
+      left = if expr.left.is_a?(Array)
+                expr.left.map {|e| evaluate(e) }
+             else
+                evaluate(expr.left)
+             end
+      @algebra.assign(left, expr.op, right)
     end
 
     def array_ref(expr)

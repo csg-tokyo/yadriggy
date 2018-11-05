@@ -489,7 +489,8 @@ module Yadriggy
         Binary     <= { left: expr, op: Symbol, right: expr }
         ArrayRef   <= { array: expr, indexes: [ expr ] }
         ArrayRefField  <= ArrayRef
-        Assign     <= Binary
+        Assign     <= { left: [expr] | expr, op: Symbol,
+                        right: [expr] | expr }
         Dots       <= Binary
         Unary      <= { op: Symbol, operand: expr }
         ConstPathRef   <= { scope: (ConstPathRef | Const), name: Const }

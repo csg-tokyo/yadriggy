@@ -30,16 +30,49 @@ module Yadriggy
     # the current value of that variable and gives the value type to that AST.
 
     rule(Assign) do
-      rtype = type(ast.right)
-      ltype = type(ast.left)
-      if ast.op != :'='   # if op is += etc.
-        LocalVarType.role(ltype)&.definition = ast.left
-      elsif ast.left.is_a?(IdentifierOrCall)
-        vtype = type_env.bound_name?(ast.left)
-        if vtype.nil?
-          bind_local_var(type_env, ast.left, DynType)
+      if ast.left.is_a?(Array)
+        type_multi_assign(ast.left, ast.op, ast.right)
+      else
+        ast_right = ast.right
+        if ast_right.is_a?(Array)
+          ast_right.each {|e| type(e) }
+          type_assign(ast.left, ast.op, DynType)
         else
-          LocalVarType.role(vtype)&.definition = ast.left
+          type_assign(ast.left, ast.op, type(ast_right))
+        end
+      end
+    end
+
+    # @api private
+    # @param [Array(ASTnode)] ast_left  left operand
+    #
+    def type_multi_assign(ast_left, ast_op, ast_right)
+      if ast_right.is_a?(Array)
+        rtypes = ast_right.map {|e| type(e) }
+        ast_left.each_with_index do |v, i|
+          type_assign(v, ast_op,
+                      i < rtypes.size ? rtypes[i] : RubyClass::NilClass)
+        end
+      else
+        type(ast_right)
+        ast_left.each_with_index {|v, i| type_assign(v, ast_op, DynType) }
+      end
+      DynType
+    end
+
+    # @api private
+    # @param [ASTnode] ast_left  the left operand
+    # @param [Type] rtype        the type of the right operand.
+    def type_assign(ast_left, ast_op, rtype)
+      ltype = type(ast_left)
+      if ast_op != :'='   # if op is += etc.
+        LocalVarType.role(ltype)&.definition = ast_left
+      elsif ast_left.is_a?(IdentifierOrCall)
+        vtype = type_env.bound_name?(ast_left)
+        if vtype.nil?
+          bind_local_var(type_env, ast_left, DynType)
+        else
+          LocalVarType.role(vtype)&.definition = ast_left
         end
       end
       DynType
@@ -365,6 +398,13 @@ module Yadriggy
     # @return [ResultType] the type of the resulting value.
     def get_call_expr_type(call_ast, type_env, method_name)
       arg_types = call_ast.args.map {|t| type(t) }
+      get_call_expr_type_with_argtypes(call_ast, type_env, method_name,
+                                       arg_types)
+    end
+
+    # @api private
+    def get_call_expr_type_with_argtypes(call_ast, type_env, method_name,
+                                         arg_types)
       type(call_ast.block_arg)
       type(call_ast.block)
 

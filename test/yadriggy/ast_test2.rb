@@ -164,6 +164,18 @@ module Yadriggy
     end
     proc.call(Yadriggy.reify(code))
 
+    code = ->(i) do
+      i, j = 7
+    end
+    proc.call(Yadriggy.reify(code))
+
+    code = ->(p) do
+      i = 1, 2
+      i2, j, k = 1, 2
+      i2, j = 1, 2, 3
+    end
+    proc.call(Yadriggy.reify(code))
+
     code = ->() { [] }
     proc.call(Yadriggy.reify(code))
 

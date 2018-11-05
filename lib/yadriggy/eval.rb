@@ -115,7 +115,11 @@ module Yadriggy
     end
 
     def assign(expr)
-      binary(expr)
+      if expr.left.is_a?(Array) || expr.right.is_a?(Array)
+        raise NotImplementedError.new('multiple assignment')
+      else
+        binary(expr)
+      end
     end
 
     def array_ref(expr)

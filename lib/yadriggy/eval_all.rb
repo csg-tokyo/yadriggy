@@ -51,6 +51,19 @@ module Yadriggy
       evaluate(expr.right)
     end
 
+    def assign(expr)
+      if expr.right.is_a?(Array)
+        expr.right.each {|e| evaluate(e) }
+      else
+        evaluate(expr.right)
+      end
+      if expr.left.is_a?(Array)
+        expr.left.each {|e| evaluate(e) }
+      else
+        evaluate(expr.left)
+      end
+    end
+
     def hash(expr)
       expr.pairs.each {|p| p.each {|e| evaluate(e) }}
     end

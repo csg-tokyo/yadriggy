@@ -33,9 +33,17 @@ module Yadriggy
     end
 
     rule(Assign) do
-      print(ast.left)
+      if ast.left.is_a?(Array)
+        print_each(ast.left, true)
+      else
+        print(ast.left)
+      end
       @printer << ' ' << ast.op << ' '
-      print(ast.right)
+      if ast.right.is_a?(Array)
+        print_each(ast.right, true)
+      else
+        print(ast.right)
+      end
     end
 
     rule(Name) do

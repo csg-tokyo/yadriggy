@@ -2,6 +2,7 @@ require 'test_helper'
 require 'yadriggy/ast'
 require 'yadriggy/algebra'
 require 'yadriggy/eval_test'
+require 'yadriggy/ast_test2.rb'
 
 module Yadriggy
   class ConcreteAlgebra < Algebra
@@ -26,6 +27,8 @@ module Yadriggy
     def unary(op, right) [op, right] end
 
     def binary(left, op, right) [left, op, right] end
+
+    def assign(left, op, right) [left, op, right] end
 
     def paren(element) element end
 
@@ -108,6 +111,14 @@ module Yadriggy
         Yadriggy.check_implementations(e)
       end
     end
+
+    test 'various ruby code' do
+      e = EvalAlgebra.new(ConcreteAlgebra.new(nil))
+      Yadriggy::check_all_asts do |ast|
+        e.evaluate(ast.tree)
+      end
+    end
   end
+
 end
 

@@ -51,9 +51,47 @@ module Yadriggy
     # Note that obj.name += ... is regarded as obj.name=(obj.name + ...).
     #
     rule(Assign) do
-      rtype = type(ast.right)
-      left_expr = ast.left
-      if ast.op != :'='    # if op is += etc.
+      if ast.left.is_a?(Array)
+        type_multi_assign(ast.left, ast.op, ast.right, ast.parent)
+      else
+        ast_right = ast.right
+        if ast_right.is_a?(Array)
+          ast_right.each {|e| type(e) }
+          type_assign(ast.left, ast.op, ast_right, DynType, ast.parent)
+        else
+          rtype = type(ast_right)
+          type_assign(ast.left, ast.op, ast_right, rtype, ast.parent)
+        end
+      end
+    end
+
+    # @api private
+    # Overriding and overloading
+    def type_multi_assign(ast_left, ast_op, ast_right, ast_parent)
+      if ast_right.is_a?(Array)
+        rtypes = ast_right.map {|e| type(e) }
+        ast_left.each_with_index do |v, i|
+          if i < rtypes.size
+            type_assign(v, ast_op, ast_right[i], rtypes[i], ast_parent)
+          else
+            # passing "ast_right" is wrong but it will not be used..
+            type_assign(v, ast_op, ast_right, RubyClass::NilClass, ast_parent)
+          end
+        end
+      else
+        type(ast_right)
+        ast_left.each_with_index do |v, i|
+            # passing "ast_right" is wrong but it will not be used..
+          type_assign(v, ast_op, ast_right, DynType, ast_parent)
+        end
+      end
+      DynType
+    end
+
+    # @api private
+    # Overriding and overloading.
+    def type_assign(left_expr, ast_op, right_expr, rtype, ast_parent)
+      if ast_op != :'='    # if op is += etc.
         ltype = type(left_expr)
         LocalVarType.role(ltype)&.definition = left_expr
         ltype
@@ -61,9 +99,11 @@ module Yadriggy
         vtype = type_env.bound_name?(left_expr)
         if vtype.nil?  # if a new name is found,
           method_name = left_expr.name  + '='
-          if is_attr_accessor?(ast, type_env, method_name.to_sym)  # self.name=()?
-            call_expr = Call.make(name: method_name, args: [ ast.right ])
-            get_call_expr_type(call_expr, type_env, method_name)
+          if is_attr_accessor?(type_env, method_name.to_sym)  # self.name=()?
+            call_expr = Call.make(name: method_name, args: [ right_expr ],
+                                  parent: ast_parent)
+            get_call_expr_type_with_argtypes(call_expr, type_env, method_name,
+                                             [ rtype ])
           else
             bind_local_var(type_env, left_expr, rtype)
           end
@@ -75,9 +115,10 @@ module Yadriggy
       elsif left_expr.is_a?(Call) && left_expr.op == :'.'      # obj.name=()?
         method_name = left_expr.name.name + '='
         call_expr = Call.make(receiver: left_expr.receiver,
-                              name: method_name, args: [ ast.right ],
-                              parent: ast.parent)
-        get_call_expr_type(call_expr, type_env, method_name)
+                              name: method_name, args: [ right_expr ],
+                              parent: ast_parent)
+        get_call_expr_type_with_argtypes(call_expr, type_env, method_name,
+                                         [ rtype ])
       elsif left_expr.is_a?(InstanceVariable)     # @var = ..., @@cvar = ..., @var += ...
         get_instance_variable_type(type_env.context, left_expr, true,
                                    InstanceType.role(rtype)&.supertype || rtype)
@@ -90,7 +131,7 @@ module Yadriggy
     end
 
     # @api private
-    def is_attr_accessor?(expr, tenv, name)
+    def is_attr_accessor?(tenv, name)
       self_t = type_env.context
       !self_t.nil? &&
         (self_t.method_defined?(name) ||
@@ -105,7 +146,7 @@ module Yadriggy
         type
       else
         method_name = name_ast.to_sym
-        if is_attr_accessor?(name_ast, tenv, method_name.to_sym)
+        if is_attr_accessor?(tenv, method_name.to_sym)
           call_expr = Call.make(name: method_name, parent: name_ast.parent)
           get_call_expr_type(call_expr, tenv, method_name)
         else

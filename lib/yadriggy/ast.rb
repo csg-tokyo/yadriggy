@@ -689,23 +689,28 @@ module Yadriggy
   # Assignment such as `=` and `+=`.
   #
   class Assign < Binary
-    def self.tags() [:assign, :opassign] end
+    def self.tags() [:assign, :opassign, :massign] end
 
     def initialize(sexp)
       case sexp[0]
       when :assign
         @left = to_node(sexp[1])
+        add_child(@left)
         @op = :'='
-        @right = to_node(sexp[2])
+        init_right(sexp[2])
       when :opassign
         @left = to_node(sexp[1])
+        add_child(@left)
         @op = has_tag?(sexp[2], :@op)[1].to_sym
-        @right = to_node(sexp[3])
+        init_right(sexp[3])
+      when :massign
+        @left = to_nodes(sexp[1])
+        add_children(@left)
+        @op = :'='
+        init_right(sexp[2])
       else
         raise "unknown assignment " + sexp[0].to_s
       end
-      add_child(@left)
-      add_child(@right)
     end
 
     # A method for Visitor pattern.
@@ -713,6 +718,19 @@ module Yadriggy
     # @return [void]
     def accept(evaluator)
       evaluator.assign(self)
+    end
+
+    private
+
+    # @api private
+    def init_right(right_operand)
+      if right_operand[0] == :mrhs_new_from_args
+        @right = to_nodes(right_operand[1]) + [to_node(right_operand[2])]
+        add_children(@right)
+      else
+        @right = to_node(right_operand)
+        add_child(@right)
+      end
     end
   end
 
