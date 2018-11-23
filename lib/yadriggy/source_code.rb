@@ -3,6 +3,24 @@
 require 'ripper'
 require 'pry'
 
+class Pry
+  class History
+    # @api private
+    # We modify Pry::History::push to record a duplicated line as well.
+    def push(line)
+      unless line.empty? || line.include?("\0")
+        @pusher.call(line)
+        @history << line
+        if !should_ignore?(line) && Pry.config.history.should_save
+          @saver.call(line)
+        end
+      end
+      line
+    end
+    alias << push
+  end
+end
+
 module Yadriggy
   # @api private
   # Retrieves source code in the S-expression style.
@@ -24,20 +42,15 @@ module Yadriggy
 
     def self.read_pry_history
       cmds = Pry.commands
-      source = ''
-      lineno = 0
-      lineno1 = Pry.history.original_lines
-      File.foreach(Pry.config.history.file) do |line|
-        lineno += 1
-        if lineno > lineno1
-          if cmds.select {|k,v| v.matches?(line) }.empty?
-            source << line
-          else
-            # source << "\n"
-          end
+      his = Pry.history.to_a[Pry.history.original_lines ...
+                             Pry.history.history_line_count]
+      his.reduce('') do |source, line|
+        if cmds.select {|k,v| v.matches?(line) }.empty?
+          source << line << "\n"
+        else
+          source # << "\n"
         end
       end
-      source
     end
 
     def self.min(a, b)
