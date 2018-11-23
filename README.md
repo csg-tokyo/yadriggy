@@ -84,6 +84,8 @@ ast = Yadriggy.reify {|a| a + 1 }
 `reify` returns the AST of the given block `{|a| a + 1 }`.
 It takes not only a block but also a `Method` or `Proc` object.
 
+Yadriggy works with Pry and IRuby unless a syntax error occurs.
+
 The idea of `reify` was proposed in the following paper:
 
 - Shigeru Chiba, YungYu Zhuang, Maximilian Scherr, "Deeply Reifying Running Code for Constructing a Domain-Specific Language", PPPJ'16, Article No. 1, ACM, August 2016.
