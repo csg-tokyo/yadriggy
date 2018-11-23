@@ -168,6 +168,7 @@ module Yadriggy
     end
 
     rule(ArrayLiteral) do
+      ast.elements.each {|t| type(t) }
       RubyClass::Array
     end
 
@@ -176,6 +177,7 @@ module Yadriggy
     end
 
     rule(HashLiteral) do
+      ast.pairs.each {|kv| type(kv[1]) }
       RubyClass::Hash
     end
 
@@ -211,15 +213,24 @@ module Yadriggy
       # f.() is equivalent to f.call()
       method_name = ast.name ? ast.name.to_sym : 'call'
       if method_name == :lambda
+        type_args_and_block(ast)
         RubyClass::Proc
       elsif method_name == :raise
+        type_args_and_block(ast)
         RubyClass::Exception
       else
         get_call_expr_type(ast, type_env, method_name)
       end
     end
 
+    def type_args_and_block(call_ast)
+      call_ast.args.each {|t| type(t) }
+      type(call_ast.block)
+    end
+
     rule(ArrayRef) do
+      type(ast.array)
+      ast.indexes.each {|t| type(t) }
       DynType
     end
 
@@ -243,6 +254,7 @@ module Yadriggy
 
     rule(ForLoop) do
       ast.vars.each {|v| bind_local_var(type_env, v, DynType) }
+      type(ast.set)
       type(ast.body)
       DynType
     end
