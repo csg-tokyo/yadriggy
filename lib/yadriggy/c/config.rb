@@ -42,7 +42,7 @@ module Yadriggy
 
       # Compiler option for OpenCL
       # @return [String]
-      OpenCLoptions = '-framework opencl '
+      OpenCLoptions = '-framework opencl -DCL_SILENCE_DEPRECATION '
 
       # Lines inserted in the generated OpenCL source file.
       OpenCLHeaders = [ '#include <OpenCL/opencl.h>' ]

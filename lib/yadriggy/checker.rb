@@ -77,17 +77,67 @@ module Yadriggy
     # Initializes the object.
     def initialize
       self.class.check_init_class
-      @error = nil
+      @nerrors = 0
+      @messages = []
       @check_list = []
       @current_ast = nil
       @current_env = nil
       @rule_declarator = nil
     end
 
-    # @return [String] an error message when the last invocation of check()
-    # returns nil.
-    def error
-      @error || ''
+    # Tests whether a type error was found.
+    # @return [Boolean]  true if an error message is recorded.
+    #
+    def errors?
+      @nerrors > 0
+    end
+
+    # Gets an array of error messages.
+    # @return [Array<String>]  error messages or `[]`.
+    #
+    def error_messages
+      @messages
+    end
+
+    # The last error message.
+    #
+    # @return [String|nil]  the message.
+    def last_error
+      @messages.last
+    end
+
+    # Throws an error.
+    #
+    # @param [ASTnode] an_ast  the AST causing the error.
+    # @param [String] msg  the error message.
+    # @return [void]  always throws an exception.
+    def error_found!(an_ast, msg='')
+      emsg = error!(an_ast, msg)
+      raise CheckError.new(emsg)
+    end
+
+    # Records an error message.
+    #
+    # @param [ASTnode] an_ast  the AST causing the error.
+    # @param [String] msg      the error message.
+    #
+    def error!(an_ast, msg='')
+      loc  = if an_ast.is_a?(ASTnode)
+               an_ast.source_location_string
+             else
+               ''
+             end
+      emsg = "#{loc} DSL #{error_group} error. #{msg}"
+      @nerrors += 1
+      @messages << emsg
+      binding.pry if Yadriggy.debug > 1
+    end
+
+    # @api private
+    # The returned value is inserted into an error messagge
+    # as the error category.
+    def error_group
+      ''
     end
 
     # Applies rules to the given AST.
@@ -192,27 +242,6 @@ module Yadriggy
       cur_ast = @current_ast
       cur_env = @current_env
       @check_list << [cur_ast, cur_env, proc]
-    end
-
-    # Throws an error.
-    #
-    # @param [ASTnode] an_ast  the AST causing the error.
-    # @param [String] msg  the error message.
-    # @return [void]  always throws an exception.
-    def error_found!(an_ast, msg='')
-      loc  = if an_ast.is_a?(ASTnode)
-               an_ast.source_location_string
-             else
-               ''
-             end
-      @error = "#{loc} DSL #{error_group} error. #{msg}"
-      binding.pry if Yadriggy.debug > 1
-      raise CheckError.new(@error)
-    end
-
-    # @api private
-    def error_group
-      ''
     end
 
     init_class

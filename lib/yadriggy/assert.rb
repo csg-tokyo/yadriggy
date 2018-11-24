@@ -58,7 +58,7 @@ module Yadriggy
         @results = results
       end
 
-      # Gets the AST of the block given to {Yadriggy::Assert#assertion}.
+      # Gets the AST of the block given to {Yadriggy::Assert::assertion}.
       # @return [ASTnode] an abstract syntax tree.
       def ast() @ast end
 

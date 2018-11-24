@@ -195,7 +195,7 @@ module Yadriggy
 
     # Applies typing rules to the given AST.
     # It returns the type of the AST or throws
-    # a CheckError.
+    # a {CheckError}.
     # This is the entry point of the type checker.  It may also
     # type the other ASTs invoked in the given AST.
     #
@@ -255,6 +255,16 @@ module Yadriggy
       else
         @typetable[an_ast] = a_type
       end
+    end
+
+    # Gets the type of the given AST if its type has been
+    # already determined by {.type}.  Only the memoized types
+    # are returned.
+    #
+    # @param [ASTnode]   an_ast    an AST.
+    # @return [Type|nil] the type or `nil` if not found.
+    def type?(an_ast)
+      @typetable[an_ast]
     end
 
     def type_assert(is_valid, errmsg='')

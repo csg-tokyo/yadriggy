@@ -472,7 +472,7 @@ module Yadriggy
     # Computes the type of the {Call} expression
     # by searching the receiver class for the called method.
     #
-    # @param [TypeEnv] new_tenv  a type environment.
+    # @param [TypeEnv] type_env  a type environment.
     # @param [Array<Type>] arg_types  the types of the actual arguments.
     # @param [Type] recv_type the receiver type.
     # @param [String|Symbol] method_name  the name of the called method.

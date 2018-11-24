@@ -23,23 +23,9 @@ module Yadriggy
         @typechecker = typechecker
         @func_counter = 0
         @func_names = {}
-        @nerrors = 0
-        @messages = []
         @public_methods = {}
         public_methods.each {|m| @public_methods[m.tree] = m.tree }
         @gvariables = {}
-      end
-
-      # Tests whether a type error was found.
-      #
-      def errors?
-        @nerrors > 0
-      end
-
-      # Gets an array of error messages.
-      #
-      def error_messages
-        @messages
       end
 
       # Gets the type checker.
@@ -99,7 +85,7 @@ module Yadriggy
       rule(InstanceVariable) do
         t = @typechecker.type(ast)
         vname = @gvariables[InstanceType.role(t)&.object]
-        error(ast, 'unknown instance variable') if vname.nil?
+        error!(ast, 'unknown instance variable') if vname.nil?
         @printer << vname
       end
 
@@ -153,7 +139,7 @@ module Yadriggy
       end
 
       rule(Dots) do
-        error(ast, 'a range object is not available')
+        error!(ast, 'a range object is not available')
       end
 
       rule(Call) do
@@ -199,7 +185,7 @@ module Yadriggy
       rule(Conditional) do
         case ast.op
         when :unless, :unless_mod
-          error(ast, "a bad control statement")
+          error!(ast, "a bad control statement")
         when :ifop
           @printer << '('
           check(ast.cond)
@@ -230,7 +216,7 @@ module Yadriggy
       rule(Loop) do
         case ast.op
         when :until, :while_mod, :until_mod
-          error(ast, "#{ast.op} is not available")
+          error!(ast, "#{ast.op} is not available")
         else
           @printer << 'while ('
           check(ast.cond)
@@ -355,7 +341,7 @@ module Yadriggy
           parameters(expr, fname_str, mt)
           @printer << ';' << :nl
         else
-          error(expr, "bad method #{fname_str}")
+          error!(expr, "bad method #{fname_str}")
         end
         self
       end
@@ -421,7 +407,7 @@ module Yadriggy
         if mt
           parameters(expr, fname, mt)
         else
-          error(expr, 'not a function')
+          error!(expr, 'not a function')
         end
 
         @printer << ' {'
@@ -449,7 +435,7 @@ module Yadriggy
             @printer << c_type(param_types[i]) << ' ' << p.name
           end
         else
-          error(expr, 'bad parameter types')
+          error!(expr, 'bad parameter types')
         end
         @printer << ')'
       end
@@ -458,7 +444,7 @@ module Yadriggy
       def local_var_declarations(def_or_block)
         local_vars = @typechecker.local_vars_table[def_or_block]
         if local_vars.nil?
-          error(def_or_block, 'bad function definition or block')
+          error!(def_or_block, 'bad function definition or block')
         else
           local_vars.each do |name, type|
             @printer << c_type(type) << ' ' << name.to_s << ';' << :nl
@@ -471,11 +457,10 @@ module Yadriggy
         CFI::c_type_name(type)
       end
 
-      def error(ast, msg)
-        @nerrors += 1
-        @messages << "#{ast.source_location_string}: #{msg}"
+      # @api private
+      def error_group
+        'code generation'
       end
-
     end # end of CodeGen
   end
 end

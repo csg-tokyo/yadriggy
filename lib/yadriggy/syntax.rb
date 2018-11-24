@@ -22,7 +22,7 @@ module Yadriggy
 
     # The user type (or non-terminal symbol) corresponding
     # to this node.  This is effective only after checking syntax
-    # by {Syntax::check}.
+    # by {Syntax#check}.
     #
     # @return [Symbol|nil] the user type.
     attr_accessor :usertype
