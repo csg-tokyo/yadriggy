@@ -16,11 +16,13 @@ module Yadriggy
   # the recorded ASTs are shared among {ASTree} objects.
   # Every call to {Yadriggy#reify} on {Yadriggy} makes a new table.  Hence,
   #
-  # <pre>ast1 = Yadriggy.reify(proc1)
+  # ```
+  # ast1 = Yadriggy.reify(proc1)
   # ast2 = ast.reify(proc2)
-  # a1 = Yadriggy.reify(proc1) # a1 != ast1
+  # a1 = Yadriggy.reify(proc1)  # a1 != ast1
   # a2 = a1.reify(proc2)        # a2 != ast2
-  # b2 = a1.reify(proc2)        # b2 == a2</pre>
+  # b2 = a1.reify(proc2)        # b2 == a2
+  # ```
   #
   # Although `ast1` and `a1`, and `ast2` and `a2` are different copies
   # of the AST of the same proc, `a2` and `b2` refer to the same AST.
