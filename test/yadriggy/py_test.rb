@@ -38,6 +38,7 @@ class Py_Tester < Test::Unit::TestCase
     assert_true(Yadriggy::Py::run { 3 > 0 && 2 > 0 })    # && -> and
     assert_true(Yadriggy::Py::run { 3 == 0 || 2 > 0 })   # || -> or
     assert_true(Yadriggy::Py::run { 3 .in [1, 2, 3] })   # in
+    assert_false(Yadriggy::Py::run { 3 .not_in [1, 2, 3] })   # not in
     assert_equal(3, Yadriggy::Py::run { 13 .idiv 4 })    # //
     assert_equal([1, 2], Yadriggy::Py::run { list(1..3) })   # range(1,3)
     assert_equal([1, 2], Yadriggy::Py::run { list(range(1, 3)) })

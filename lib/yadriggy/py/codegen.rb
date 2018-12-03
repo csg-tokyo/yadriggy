@@ -190,6 +190,9 @@ module Yadriggy
         elsif ast.name.name == 'in' && !ast.receiver.nil? && ast.args&.size == 1
           # a .in b, a.in(b) => a in b
           print_binary(ast, ' in ')
+        elsif ast.name.name == 'not_in' && !ast.receiver.nil? && ast.args&.size == 1
+          # a .not_in b, a.not_in(b) => a not in b
+          print_binary(ast, ' not in ')
         elsif ast.name.name == 'idiv' && !ast.receiver.nil? && ast.args&.size == 1
           # a .idiv b, a.idiv(b) => a // b
           print_binary(ast, ' // ')
