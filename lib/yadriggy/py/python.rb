@@ -106,9 +106,9 @@ module Yadriggy
     end
 
     def self.generate_except_last(ast, gen)
-      if expr_or_subtype(ast.usertype)
+      if expr_or_subtype(ast)
         ast
-      elsif ast.is_a?(Exprs) && expr_or_subtype(ast.expressions[-1]&.usertype)
+      elsif ast.is_a?(Exprs) && expr_or_subtype(ast.expressions[-1])
         ast.expressions[0...-1].each do |e|
           gen.print(e)
           gen.newline
@@ -120,9 +120,14 @@ module Yadriggy
       end
     end
 
-    def self.expr_or_subtype(usertype)
-      usertype == :expr || usertype == :lambda_call || usertype == :fun_call ||
-      usertype == :ternary
+    def self.expr_or_subtype(ast)
+      if ast.nil? || ast.is_a?(Assign)
+        false
+      else
+        usertype = ast.usertype
+        usertype == :expr || usertype == :lambda_call || usertype == :fun_call ||
+        usertype == :ternary
+      end
     end
   end
 end
