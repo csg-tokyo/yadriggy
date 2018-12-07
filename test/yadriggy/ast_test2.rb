@@ -192,6 +192,9 @@ module Yadriggy
     code = ->() { {one: 1, two: 2} }
     proc.call(Yadriggy.reify(code))
 
+    code = ->() { {'one': 1, 'two': 2} }
+    proc.call(Yadriggy.reify(code))
+
     code = ->(a) { a[0] }
     proc.call(Yadriggy.reify(code))
 

@@ -34,7 +34,7 @@ module Yadriggy
       StringLiteral  = { value: String }
       ArrayLiteral   = { elements: ForLoop | [ expr ] }
       Paren      = { expression: expr }
-      HashLiteral    = { pairs: [ (expr|Label) * expr ] }
+      HashLiteral    = { pairs: [ (expr|Label|SymbolLiteral) * expr ] }
       Return     = { values: [ expr ] }
       ForLoop    = {vars: [ Identifier ], set: expr, body: exprs }
       Loop       = { op: :while, cond: expr, body: exprs }

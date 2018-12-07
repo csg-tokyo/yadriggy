@@ -119,10 +119,21 @@ class Py_Tester < Test::Unit::TestCase
 
   test 'hash literal or dict 2' do
     res = Yadriggy::Py::run do
-      hash = { foo:1, bar: 2 }
+      hash = { 'foo':1, 'bar': 2 }
       hash['foo']
     end
     assert_equal(1, res)
+  end
+
+  test 'hash literal or dict 3' do
+    res = Yadriggy::Py::run do
+      foo = 'baz'
+      bar = 10
+      hash = { 'foo':1, '1': 2 }
+      hash2 = { foo:10, bar: 20}
+      hash['foo'] + hash2[foo]
+    end
+    assert_equal(11, res)
   end
 
   test 'sequence' do

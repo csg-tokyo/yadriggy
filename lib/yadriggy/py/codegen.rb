@@ -69,7 +69,7 @@ module Yadriggy
       end
 
       rule(Label) do
-        @printer << "'" << ast.name << "'"
+        @printer << ast.name
       end
 
       rule(IdentifierOrCall) do
@@ -159,6 +159,11 @@ module Yadriggy
           print(pair[1])
         end
         @printer << '}'
+      end
+
+      # Hash key.
+      rule(SymbolLiteral) do
+        @printer << ast.name.to_s.dump
       end
 
       # Slicing in Python like [1:n] is written

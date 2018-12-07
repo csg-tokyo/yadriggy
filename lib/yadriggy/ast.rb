@@ -326,7 +326,12 @@ module Yadriggy
 
     def initialize(sexp)
       if sexp[0] == :dyna_symbol
-        init(has_tag?(sexp[1][0], :@tstring_content))
+        sexp2 = if sexp[1][0] == :string_content
+                  sexp[1][1]
+                 else
+                  sexp[1][0]
+                 end
+        init(has_tag?(sexp2, :@tstring_content))
       elsif sexp[0] == :symbol_literal
         init(has_tag?(sexp[1], :symbol)[1])
       else

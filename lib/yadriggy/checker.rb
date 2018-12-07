@@ -131,6 +131,7 @@ module Yadriggy
       @nerrors += 1
       @messages << emsg
       binding.pry if Yadriggy.debug > 1
+      emsg
     end
 
     # @api private
