@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{library for building a DSL embedded in Ruby.}
 
-  spec.description   = %q{Yadriggy builds the abstract syntax tree (AST) of a method, checks its syntax and types, and runs it.  When checking the syntax and types, it is treated as the code written in a domain specific language (DSL).  It also provide simple DSLs for computation offloading from Ruby to C etc.}
+  spec.description   = %q{Yadriggy builds the abstract syntax tree (AST) of a method, checks its syntax and types, and runs it.  When checking the syntax and types, it is treated as the code written in a domain specific language (DSL).  It also provide simple DSLs for computation offloading from Ruby to C, Python, etc.}
 
   spec.homepage      = "https://github.com/csg-tokyo/yadriggy"
   spec.license       = "MIT"
