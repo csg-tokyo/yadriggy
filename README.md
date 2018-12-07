@@ -2,22 +2,23 @@
 
 Yadriggy (mistletoe in Japanese) is a library for building a
 domain-specific language (DSL) embedded in Ruby.  It was developed for
-a particular kind of embedded DSLs, which we call hemiparasitic DSLs.
+a particular kind of embedded DSLs.
 These DSLs borrow the syntax from the host language, Ruby, and the
 code written in the DSLs is embedded in normal Ruby code.  However,
 the execution of the DSL code is independent of Ruby.  Its semantics
 can be totally different from Ruby and the code can be run out of the
-Ruby VM.  Hemiparasitic DSLs look like Ruby but they are different
+Ruby VM.  These DSLs look like Ruby but they are different
 languages except their syntax.
-They parasitize Ruby by borrowing the syntax but their parasitism is
-hemi; their execution engines are their own.
+They are embedded in Ruby by borrowing the syntax but their embedding is
+outward; their execution engines are their own.
 
 For details, the documentation is available from [Wiki](https://github.com/csg-tokyo/yadriggy/wiki).
 
-## Hemiparasitic DSLs
+## An example
 
-A typical example of hemiparasitic DSL is computation offloading from
-Ruby.  For example, Yadriggy provides a simple DSL to offload
+Computation offloading from Ruby is a typical example of the DSLs
+implemented by Yadriggy.
+For example, Yadriggy provides a simple DSL to offload
 from Ruby to native C language.
 
 ```ruby
@@ -59,7 +60,7 @@ The variable `n` in the Ruby code keeps the old value.
 
 Note that the definition of `fib` contains type declarations
 since this DSL is not Ruby.
-A hemiparasitic DSL looks like Ruby but it is a different language.
+This DSL looks like Ruby but it is a different language.
 `! Integer` following `def fib(n)` specifies the return type.
 `typedecl` specifies the types of the parameters (and local variables
 if any).  In this DSL, most types have to be statically given

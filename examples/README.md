@@ -55,3 +55,14 @@ $ ruby -I../lib -I. image_filters/laplacian_demo.rb photo-large.png
 ```
 
 This applies the filter to `photo-large.png`.
+
+### Matplotlib
+
+`matplotlib.rb` is the source code.
+It draws a pie chart by matplotlib in Python.
+
+```
+$ ruby -I../lib matplotlib.rb
+```
+
+The Python interpreter (`python` command) must be available.
