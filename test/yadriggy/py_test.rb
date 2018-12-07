@@ -183,6 +183,14 @@ class Py_Tester < Test::Unit::TestCase
     assert_equal(12, res)
   end
 
+  test 'three free variable of list type' do
+    lst = [1, 2, 3, [:a, 10]]
+    lst2 = [10, 20, 30]
+    lst3 = [100, 200, 300]
+    res = Yadriggy::Py::run { lst[1] + lst2[1] + lst3[1] }
+    assert_equal(222, res)
+  end
+
   test 'import and property' do
     Yadriggy::Py::Import.import('sys')
     Yadriggy::Py::run { print(sys::version) }   # sys.version

@@ -1,9 +1,5 @@
 # Copyright (C) 2018- Shigeru Chiba.  All rights reserved.
 
-# Environment variable PYTHON specifies the name of the Python command.
-# It has to be Python 3.  If it is not specified, PyCall invokes 'python3'.
-ENV['PYTHON'] = 'python3' if ENV['PYTHON'].nil?
-
 require 'pycall'
 require 'yadriggy'
 require 'yadriggy/py/codegen'
@@ -77,8 +73,6 @@ module Yadriggy
                    { superclass: (Const | ConstPathRef) }
     end
 
-    raise 'not Python 3' unless PyCall::PYTHON_VERSION >= '3'
-
     def self.run(&blk)
       ast = Yadriggy::reify(blk)
       Syntax.raise_error unless Syntax.check(ast.tree)
@@ -125,8 +119,11 @@ module Yadriggy
         false
       else
         usertype = ast.usertype
-        usertype == :expr || usertype == :lambda_call || usertype == :fun_call ||
-        usertype == :ternary
+        if usertype == :fun_call
+          ast.name.name != 'print'
+        else
+          usertype == :expr || usertype == :lambda_call || usertype == :ternary
+        end
       end
     end
   end

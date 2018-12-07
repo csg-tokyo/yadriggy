@@ -48,7 +48,8 @@ module Yadriggy
       def print_free_vars_initializer
         @printer << 'def ' << FreeVarInitName << '(_yadpy_values):' << :nl
         @printer << '  global '
-        @typechecker.references.each do |pair|
+        @typechecker.references.each_with_index do |pair, i|
+          @printer << ', ' if i > 0
           @printer << pair[1]
         end
         @printer << :nl
