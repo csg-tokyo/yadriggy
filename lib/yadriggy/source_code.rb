@@ -3,10 +3,13 @@
 require 'ripper'
 require 'pry'
 
+# Interactive shell.
 class Pry
+  # Log.
   class History
-    # @api private
-    # We modify Pry::History::push to record a duplicated line as well.
+    # Records a line.
+    # We modify the original `Pry::History::push` to record a duplicated line as well.
+    # @param [String] line  an input.
     def push(line)
       unless line.empty? || line.include?("\0")
         @pusher.call(line)
@@ -22,6 +25,14 @@ class Pry
 end
 
 module Yadriggy
+  # Discards all the code given to Pry before.
+  # This should be called when the code given before includes
+  # a syntax error and hence {reify} cannot obtain an
+  # abstract syntax tree.
+  def self.reset_pry
+    SourceCode.reset_pry
+  end
+
   # @api private
   # Retrieves source code in the S-expression style.
   class SourceCode
@@ -40,11 +51,17 @@ module Yadriggy
       prog && [file_name, find_sexp(prog, line)]
     end
 
+    @pry_offset = 0
+
+    def self.reset_pry
+      @pry_offset = Pry.history.history_line_count - Pry.history.original_lines
+    end
+
     def self.read_pry_history
       cmds = Pry.commands
-      his = Pry.history.to_a[Pry.history.original_lines ...
+      his = Pry.history.to_a[Pry.history.original_lines + @pry_offset ...
                              Pry.history.history_line_count]
-      his.reduce('') do |source, line|
+      his.reduce("\n" * @pry_offset) do |source, line|
         if cmds.select {|k,v| v.matches?(line) }.empty?
           source << line << "\n"
         else
