@@ -36,6 +36,7 @@ module Yadriggy
       [@rules, @rule_declarators]
     end
 
+    # @api private
     private_class_method def self.init_class
       @rules = {}
       @rule_declarators = {}
@@ -56,6 +57,7 @@ module Yadriggy
       find_rule_entry2(ast.class, ast.usertype)
     end
 
+    # @api private
     private_class_method def self.find_rule_entry2(ast_class, utype)
       unless utype.nil?
         rule = @rules[utype]
