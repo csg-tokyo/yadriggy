@@ -210,7 +210,7 @@ module Yadriggy
     # Applies the rule supplied by the superclass.
     # @param [ASTnode] an_ast  an AST.
     # @param [Object] envi  an environment object.
-    # @return [Type] the type of the given AST.
+    # @return [Object] the result of the application.
     def proceed(an_ast, envi=nil)
       rule = if @rule_declarator&.superclass == Object
                nil
