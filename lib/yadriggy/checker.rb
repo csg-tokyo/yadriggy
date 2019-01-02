@@ -149,7 +149,7 @@ module Yadriggy
     # This is the entry point of the checker.  It may also
     # check the other ASTs invoked in the given AST.
     #
-    # @param [ASTree|ASTnode] an_ast  the AST.
+    # @param [ASTree|ASTnode|nil] an_ast  the AST.
     # @return [Object]
     def check_all(an_ast)
       return nil if an_ast.nil?
@@ -164,6 +164,9 @@ module Yadriggy
     end
 
     # Makes a new base environment with the given context class.
+    # It is called by `check_all`.  Override this method to customize
+    # `check_all`.
+    #
     # @param [Module] klass  the context class.
     def make_base_env(klass)
       klass

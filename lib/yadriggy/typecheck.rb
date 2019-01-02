@@ -160,6 +160,7 @@ module Yadriggy
     end
 
     # Gets the current type environment.
+    # @return [TypeEnv] the type enviornment.
     #
     def type_env
       @current_env
@@ -204,11 +205,16 @@ module Yadriggy
     #
     # This is an alias of check_all() but it memoizes the results.
     #
+    # @param [ASTnode|ASTree|nil] an_ast  an AST or nil.
+    # @return [Type] the type of the given AST.  It memoizes the results.
+    #
     def typecheck(an_ast)
       check_all(an_ast)
     end
 
     # Makes a new base type environment with the given context class.
+    #
+    # @return [TypeEnv] the type enviornment.
     #
     def make_base_env(klass)
       TypeEnv::BaseTypeEnv.new(klass)
@@ -248,7 +254,7 @@ module Yadriggy
     #
     # @param [ASTnode|nil]  an_ast  an AST.
     # @param [Type] a_type  a type.
-    # @return [Type|nil] the given type `a_type`.
+    # @return [Type|DynType] the given type `a_type`.
     def type_as(an_ast, a_type)
       if an_ast.nil?
         DynType
