@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.extensions = %w[ext/yadriggy/oops/extconf.rb]
+
   spec.add_dependency "pycall"
   spec.add_dependency "ffi"
   spec.add_dependency "pry"
