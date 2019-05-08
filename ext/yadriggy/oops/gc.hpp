@@ -108,7 +108,8 @@ class YHeader {
     uint64_t header2;
 
 public:
-    virtual uint64_t object_size();
+    virtual uint64_t y_hash();
+    virtual uint64_t y_eql$(boxed_t obj);   // eql?
 
     /**
      * object:      a normal object.

@@ -2,8 +2,8 @@
 
 #include "ruby.h"
 
-extern void yadriggy_oops_gc_initialize(int, int);
-extern void yadriggy_oops_gc_finalize(void);
+extern void yadriggy_oops_gc_allocate(int, int);
+extern void yadriggy_oops_gc_release(void);
 extern int yadriggy_oops_gc_get_debug(void);
 extern void yadriggy_oops_gc_set_debug(int);
 extern unsigned int yadriggy_oops_gc_tenure_size(void);
@@ -11,12 +11,12 @@ extern unsigned int yadriggy_oops_gc_minor(void);
 extern unsigned int yadriggy_oops_gc_major(void);
 
 static VALUE gc_allocate(VALUE klass, VALUE young_size, VALUE stack_size) {
-    yadriggy_oops_gc_initialize(FIX2UINT(young_size), FIX2UINT(stack_size));
+    yadriggy_oops_gc_allocate(FIX2UINT(young_size), FIX2UINT(stack_size));
     return Qnil;
 }
 
 static VALUE gc_release(VALUE klass) {
-    yadriggy_oops_gc_finalize();
+    yadriggy_oops_gc_release();
     return Qnil;
 }
 

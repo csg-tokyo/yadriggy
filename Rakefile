@@ -16,6 +16,7 @@ end
 Rake::ExtensionTask.new "yadriggy/oops" do |ext|
   ext.name = "yadriggy_oops"
   ext.lib_dir = "lib/yadriggy/oops"
+  cp "ext/yadriggy/oops/gc.hpp", ext.lib_dir
 end
 
 task :default => :test

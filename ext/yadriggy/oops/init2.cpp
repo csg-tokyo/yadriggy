@@ -3,8 +3,8 @@
 #include "gc_impl.hpp"
 
 extern "C" {
-    void yadriggy_oops_gc_initialize(int young_size, int stack_size);
-    void yadriggy_oops_gc_finalize();
+    void yadriggy_oops_gc_allocate(int young_size, int stack_size);
+    void yadriggy_oops_gc_release();
     int yadriggy_oops_gc_get_debug();
     void yadriggy_oops_gc_set_debug(int level);
     unsigned int yadriggy_oops_gc_tenure_size();
@@ -12,12 +12,12 @@ extern "C" {
     unsigned int yadriggy_oops_gc_major();
 }
 
-void yadriggy_oops_gc_initialize(int young_size, int stack_size) {
+void yadriggy_oops_gc_allocate(int young_size, int stack_size) {
     yadriggy::GC::initialize(young_size * 1024 * 1024 / sizeof(uint64_t),
                              stack_size * 1024 * 1024 / sizeof(uint64_t));
 }
 
-void yadriggy_oops_gc_finalize() {
+void yadriggy_oops_gc_release() {
     yadriggy::GC::finalize();
 }
 

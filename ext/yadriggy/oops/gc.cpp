@@ -31,8 +31,12 @@ int GC::mark_sweep_gc_count;
 
 YHeader::~YHeader() {}
 
-uint64_t YHeader::object_size() {
-    return field_size() + sizeof(YHeader) / sizeof(uint64_t);
+boxed_t YHeader::y_hash() {
+    return Box::to_boxed(hash_value());
+}
+
+boxed_t YHeader::y_eql$(boxed_t obj) {
+    return Box::to_boxed(this) == obj ? Box::to_boxed(1) : Box::to_boxed(0);
 }
 
 uint64_t* YHeader::allocate_in_semi2(size_t wcount) {
@@ -87,6 +91,7 @@ void GC::finalize() {
                  << mark_sweep_gc_count << " times." << std::endl;
 
     delete nursery_space;
+    nursery_space = nullptr;
     Shadow::shadow_stack.clear();
     Shadow::shadow_stack.shrink_to_fit();
     remember_set.clear();
