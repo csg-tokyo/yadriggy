@@ -189,6 +189,14 @@ class Py_Tester < Test::Unit::TestCase
     end
   end
 
+  test 'with statement 2' do
+    res = Yadriggy::Py::run do
+      with open('Rakefile', 'r') => f, open('Gemfile') => g do
+        print(len(f.read()) + len(g.read()))
+      end
+    end
+  end
+
   test 'a free variable of string type' do
     str = 'hello'
     sym = :world
