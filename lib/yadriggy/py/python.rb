@@ -12,7 +12,7 @@ module Yadriggy
     Syntax = Yadriggy.define_syntax do
       expr  = Name | Number | Super | Binary | Unary | ternary |
                 StringLiteral | Lambda |
-                ArrayLiteral | Paren | lambda_call | fun_call | ArrayRef | HashLiteral
+                ArrayLiteral | Paren | lambda_call | with_call | fun_call | ArrayRef | HashLiteral
       stmnt = Return | ForLoop | Loop | if_stmnt | Break |
                  BeginEnd | Def | ModuleDef
       exprs = Exprs | stmnt | expr
@@ -55,6 +55,9 @@ module Yadriggy
       lambda_name = { name: "lambda" }
       lambda_call = Call + { receiver: nil, op: nil, name: lambda_name,
                      args: nil, block_arg: nil, block: Block }
+      with_name  = { name: "with" }
+      with_call  = Call + { receiver: nil, op: nil, name: with_name,
+                            args: HashLiteral, block_arg: nil, block: Block }
       fun_call   = Call + { receiver: (expr), op: (Symbol), name: Identifier,
                      args: [ expr ], block_arg: nil, block: nil }
       Command    = fun_call

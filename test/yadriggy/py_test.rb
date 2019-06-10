@@ -181,6 +181,14 @@ class Py_Tester < Test::Unit::TestCase
     assert_equal(321, res)
   end
 
+  test 'with statement' do
+    res = Yadriggy::Py::run do
+      with open('Rakefile', 'r') => f do
+        print(len(f.read()))
+      end
+    end
+  end
+
   test 'a free variable of string type' do
     str = 'hello'
     sym = :world

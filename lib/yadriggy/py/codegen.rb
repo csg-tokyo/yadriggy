@@ -333,6 +333,21 @@ module Yadriggy
         print_lambda(ast.block)
       end
 
+      rule(:with_call) do
+        pairs = ast.args[0].pairs
+        # ast.args[0].pairs[0][1]
+        @printer << 'with '
+        print_each(ast.args[0].pairs, true) do |expr_var|
+          print(expr_var[0])
+          @printer << ' as '
+          print(expr_var[1])
+        end
+        @printer << ':'
+        @printer.down
+        print(ast.block.body)
+        @printer.up
+      end
+
       rule(Conditional) do
         if ast.op == :if
           @printer << ast.op << ' '
