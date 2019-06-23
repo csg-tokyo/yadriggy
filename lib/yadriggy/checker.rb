@@ -196,7 +196,7 @@ module Yadriggy
     # internal use only
     def apply_typing_rule(rule, an_ast, ast_tenv)
       if rule.nil?
-        error_found!(an_ast, "no typing rule for #{an_ast.class}")
+        error_found!(an_ast, "no rule for #{an_ast.class}")
       else
         old_ast = @current_ast
         old_tenv = @current_env
