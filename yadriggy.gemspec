@@ -16,9 +16,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/csg-tokyo/yadriggy"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features|examples)/})
-  end
+  spec.files         = Dir['lib/**/*.rb'] +
+      %w(.yardopts Gemfile LICENSE README.md Rakefile yadriggy.gemspec)
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
