@@ -36,7 +36,8 @@ boxed_t YHeader::y_hash() {
 }
 
 boxed_t YHeader::y_eql$(boxed_t obj) {
-    return Box::to_boxed(this) == obj ? Box::to_boxed(1) : Box::to_boxed(0);
+    return Box::to_boxed(this) == obj ? Box::to_boxed(int64_t(1))
+                                      : Box::to_boxed(int64_t(0));
 }
 
 uint64_t* YHeader::allocate_in_semi2(size_t wcount) {

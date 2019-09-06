@@ -3,7 +3,7 @@ require "rake/testtask"
 require "rake/extensiontask"
 require "yard"
 
-Rake::TestTask.new(:test) do |t|
+Rake::TestTask.new(:test => :compile) do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList['test/**/*_test.rb']

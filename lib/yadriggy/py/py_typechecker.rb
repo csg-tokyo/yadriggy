@@ -1,6 +1,7 @@
 # Copyright (C) 2018- Shigeru Chiba.  All rights reserved.
 
-require 'yadriggy/py/python'
+require 'yadriggy'
+require 'yadriggy/py/syntax'
 
 module Yadriggy
   module Py
