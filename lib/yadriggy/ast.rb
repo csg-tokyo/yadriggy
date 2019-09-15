@@ -912,7 +912,7 @@ module Yadriggy
 
     def initialize_call(sexp)
       @receiver = to_node(sexp[1])
-      @op = sexp[2]	# :"." or :"::" or nil.
+      @op = op_symbol(sexp[2])    # :"." or :"::" or nil.
       @name = if sexp[3] == :call
                 nil
               else
@@ -920,6 +920,16 @@ module Yadriggy
               end
       add_child(@receiver)
       add_child(@name)
+    end
+
+    def op_symbol(op)
+      if op.is_a?(Array)
+        op = has_tag?(op, :@period)
+        op[1].to_sym
+      else
+        # Ruby 2.5 or earlier
+        op
+      end
     end
 
     def initialize_args(args_block)
@@ -1380,7 +1390,7 @@ module Yadriggy
       if body.is_a?(Array) && body.length > 0 && body[0] == :bodystmt
         bodystmnt = body[1]
         @rescue = Rescue.make(body[2], body[3], body[4])
-      else # if Ruby 2.4 or earlier
+      else # if Ruby 2.5 or earlier
         bodystmnt = body
         @rescue = nil
       end
@@ -1488,8 +1498,14 @@ module Yadriggy
       if else_expr.nil?
         @else = nil
       else
-        elsexpr = has_tag?(else_expr, :else)
-        @else = Exprs.make(elsexpr[1])
+        if !else_expr.nil? && else_expr[0].is_a?(Array)
+          else_body = else_expr
+        else
+          # Ruby 2.4 or earlier
+          elsexpr = has_tag?(else_expr, :else)
+          else_body = else_expr[1]
+        end
+        @else = Exprs.make(else_body)
         add_child(@else)
       end
 
