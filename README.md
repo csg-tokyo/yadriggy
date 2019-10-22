@@ -1,6 +1,6 @@
 # Yadriggy
 
-Yadriggy (mistletoe in Japanese) is a library for building a
+Yadriggy (mistletoe in English) is a library for building a
 domain-specific language (DSL) embedded in Ruby.  It was developed for
 a particular kind of embedded DSLs.
 These DSLs borrow the syntax from the host language, Ruby, and the
@@ -90,6 +90,10 @@ Yadriggy works with Pry and IRuby unless a syntax error occurs.
 The idea of `reify` was proposed in the following paper:
 
 - Shigeru Chiba, YungYu Zhuang, Maximilian Scherr, "Deeply Reifying Running Code for Constructing a Domain-Specific Language", PPPJ'16, Article No. 1, ACM, August 2016.
+
+Yadriggy-Py was presented in the following paper:
+
+- Shigeru Chiba, Foreign language interfaces by code migration, Proc. of the 18th ACM SIGPLAN International Conference on Generative Programming: Concepts and Experiences (GPCE 2019), pp. 1-13, ACM, 2019.
 
 ## Installation
 

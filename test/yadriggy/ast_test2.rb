@@ -145,6 +145,7 @@ module Yadriggy
       a = %s(foobar baz)
       # b = %i(foo bar baz)   # Ripper produces an S-exp for %w.
       # c = %r(foobar)
+      # d = %x(ls)
     end
     proc.call(Yadriggy.reify(code))
 
