@@ -627,6 +627,17 @@ module Yadriggy
       name << '<' << @args.map{|e| e.name }.join(',') << '>'
       name
     end
+
+    # @api private
+    # Gets a method with the given name declared in this type.
+    # `nil` is returned when the method is not exactly determined.
+    #
+    # @return [Method|nil]
+    def get_method_object(method_name)
+      exact_type.instance_method(method_name)
+    rescue NameError
+      Type.error_found!("no such method: #{@ruby_class}\##{method_name}")
+    end
   end
 
   # A role that can be attached to a {Type} object.
