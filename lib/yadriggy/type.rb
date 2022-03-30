@@ -621,7 +621,7 @@ module Yadriggy
     # Obtains the name of this type.
     # @return [String] the type name.
     def name
-      name = @ruby_class.name
+      name = @ruby_class.name.dup
       name << '<' << @args.map{|e| e.name }.join(',') << '>'
       name
     end
