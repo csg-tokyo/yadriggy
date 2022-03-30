@@ -381,6 +381,8 @@ module Yadriggy
   RubyClass::String = RubyClass.make(String)
   RubyClass::Integer = RubyClass.make(Integer)
   RubyClass::Float = RubyClass.make(Float)
+  RubyClass::Rational = RubyClass.make(Rational)
+  RubyClass::Complex = RubyClass.make(Complex)
   RubyClass::Range = RubyClass.make(Range)
   RubyClass::Hash = RubyClass.make(Hash)
   RubyClass::Array = RubyClass.make(Array)

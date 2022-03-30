@@ -257,7 +257,7 @@ module Yadriggy
     attr_reader :column
 
     def self.tags()
-      [:@int, :@float]
+      [:@int, :@float, :@rational, :@imaginary]
     end
 
     def initialize(sexp)
@@ -270,8 +270,12 @@ module Yadriggy
                  end
                when :@float
                  sexp[1].to_f
+               when :@rational
+                 sexp[1].to_r
+               when :@imaginary
+                 Complex(sexp[1])
                else
-                 raise "unknown symbol " + sexp[0]
+                 raise "unknown symbol #{sexp[0]}"
                end
       @line_no = sexp[2][0].to_i
       @column = sexp[2][1].to_i

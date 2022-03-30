@@ -238,8 +238,12 @@ module Yadriggy
         end
       when :**, :*, :/, :%, :+, :-
         if left_t <= RubyClass::Numeric
-          if left_t <= RubyClass::Float || right_t <= RubyClass::Float
+          if left_t <= RubyClass::Complex || right_t <= RubyClass::Complex
+            return RubyClass::Complex
+          elsif left_t <= RubyClass::Float || right_t <= RubyClass::Float
             return RubyClass::Float
+          elsif left_t <= RubyClass::Rational || right_t <= RubyClass::Rational
+            return RubyClass::Rational
           else
             return RubyClass::Integer
           end

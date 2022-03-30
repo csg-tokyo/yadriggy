@@ -128,5 +128,22 @@ OK
       obj = Yadriggy::Call.make(name: vcall.name, parent: vcall.parent)
       assert(obj.is_a?(Yadriggy::Call))
     end
+
+    test 'rational number literal' do
+      ast = Yadriggy.reify do
+        1/2r
+      end
+      assert_equal(1, ast.tree.body.left.value)
+      assert_equal(2, ast.tree.body.right.value)
+      assert_equal(Rational, ast.tree.body.right.value.class)
+    end
+
+    test 'imaginary number literal' do
+      ast = Yadriggy.reify do
+        1 + 2i
+      end
+      assert_equal(1, ast.tree.body.left.value)
+      assert_equal(Complex(0, 2), ast.tree.body.right.value)
+    end
   end
 end
