@@ -514,7 +514,7 @@ module Yadriggy
                        block_param: (Identifier) }
         Block      <= Parameters + { body: exprs }
         Lambda     <= Block
-        Call       <= { receiver: (expr), op: (Symbol), name: (Identifier),
+        Call       <= { receiver: (expr), op: (Symbol), name: (Identifier | Const),
                         args: [ expr ], block_arg: (expr), block: (Block) }
         Command    <= Call
         Exprs      <= { expressions: [ expr ] }
@@ -524,7 +524,7 @@ module Yadriggy
                         else: (exprs), ensure: (exprs) }
         BeginEnd   <= { body: exprs, rescue: (Rescue) }
         Def        <= Parameters +
-                      { singular: (expr), name: Identifier, body: exprs,
+                      { singular: (expr), name: (Identifier | Const), body: exprs,
                         rescue: (Rescue) }
         ModuleDef  <= { name: Const | ConstPathRef, body: exprs,
                         rescue: (Rescue) }

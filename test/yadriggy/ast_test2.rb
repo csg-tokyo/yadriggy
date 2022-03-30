@@ -20,6 +20,10 @@ module Yadriggy
     i
   end
 
+  def self.ConstNameMethod(i)
+    i
+  end
+
   @@check_ast_const_path = Yadriggy.reify do |e|
     YadAstCheck::A = 3
     ::YadAstCheck000 = 7
@@ -479,6 +483,9 @@ module Yadriggy
     proc.call(@@check_ast_const_path)
     proc.call(@@check_ast_module)
     proc.call(@@check_ast_class)
+
+    code = -> { ConstNameMethod(1) }
+    proc.call(Yadriggy.reify(code))
 
     # pp Yadriggy.reify(code)
 

@@ -300,11 +300,11 @@ module Yadriggy
     end
 
     # @param [Array] s  an S-expression.
-    # @param [Symbol] tag
+    # @param [Array<Symbol>] tags
     # @return [Array] the S-expression if it starts with the tag.
     #   Otherwise, raise an error.
-    def has_tag?(s, tag)
-      raise "s-exp is not :#{tag.to_s}. #{s}" if !s.nil? && s[0] != tag
+    def has_tag?(s, *tags)
+      raise "s-exp is not :#{tags.join(", ")}. #{s}" if !s.nil? && !tags.include?(s[0])
       s
     end
   end
@@ -916,7 +916,7 @@ module Yadriggy
       @name = if sexp[3] == :call
                 nil
               else
-                @name = to_node(has_tag?(sexp[3], :@ident))
+                @name = to_node(has_tag?(sexp[3], :@ident, :@const))
               end
       add_child(@receiver)
       add_child(@name)
@@ -1596,7 +1596,7 @@ module Yadriggy
       @name = if def_name[0] == :@op
                 to_node(def_name)
               else
-                to_node(has_tag?(def_name, :@ident))
+                to_node(has_tag?(def_name, :@ident, :@const))
               end
       add_child(@name)
 
