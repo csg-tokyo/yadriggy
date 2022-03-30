@@ -204,6 +204,26 @@ module Yadriggy
       assert(t == RubyClass::Integer)
     end
 
+    test 'typecheck a binary expression with Rational' do
+      ast = Yadriggy::reify { 5 / 3r }.tree.body
+      t = typechecker.typecheck(ast)
+      assert(t == RubyClass::Rational)
+
+      ast = Yadriggy::reify { 5.0 / 3r }.tree.body
+      t = typechecker.typecheck(ast)
+      assert(t == RubyClass::Float)
+    end
+
+    test 'typecheck a binary expression with Complex' do
+      ast = Yadriggy::reify { 5 + 3i }.tree.body
+      t = typechecker.typecheck(ast)
+      assert(t == RubyClass::Complex)
+
+      ast = Yadriggy::reify { 5.0 + 3i }.tree.body
+      t = typechecker.typecheck(ast)
+      assert(t == RubyClass::Complex)
+    end
+
     test 'various ruby code' do
       syn = Yadriggy::Syntax.ruby_syntax
       tchecker = RubyTypeInferer.new(syn)
