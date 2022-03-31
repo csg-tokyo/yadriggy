@@ -285,5 +285,20 @@ module Yadriggy
 
     end
 
+    test 'Type.get_instance_method_object' do
+      assert_equal(nil, Type.get_instance_method_object(DynType, :to_s))
+
+      assert_equal(String.instance_method(:length), Type.get_instance_method_object(RubyClass::String, :length))
+
+      assert_raise(TypeChecker::CheckError) do
+        Type.get_instance_method_object(RubyClass::Symbol, :to_f)
+      end
+
+      ct = CompositeType.new(Array, [Integer])
+      assert_equal(Array.instance_method(:shuffle), Type.get_instance_method_object(ct, :shuffle))
+
+      ct2 = CompositeType.new(Range, [Integer])
+      assert_equal(Range.instance_method(:each), Type.get_instance_method_object(ct2, :each))
+    end
   end
 end
